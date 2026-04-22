@@ -1,9 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Мой сайт</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тестовый сайт</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.08);
+      --text: #f3f6ff;
+      --muted: #b9c2e0;
+      --accent: #7c9cff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Inter, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #1a2342, var(--bg));
+      color: var(--text);
+    }
+    .card {
+      width: min(680px, calc(100% - 32px));
+      padding: 32px;
+      border-radius: 20px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p { margin: 0; line-height: 1.6; color: var(--muted); font-size: 1.1rem; }
+    .badge {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(124,156,255,0.16);
+      color: #dbe4ff;
+      font-size: 0.95rem;
+    }
+    strong { color: var(--text); }
+    a { color: #cdd8ff; }
+  </style>
 </head>
 <body>
-  <h1>Привет, мир!</h1>
+  <main class="card">
+    <div class="badge">GitHub Pages • тест обновления</div>
+    <h1>Сайт обновлён 🚀</h1>
+    <p>
+      Это тестовая страница для <strong>lforgpt5.github.io</strong>.
+      Обновление выполнено через OpenClaw и запушено в GitHub.
+    </p>
+  </main>
 </body>
 </html>
