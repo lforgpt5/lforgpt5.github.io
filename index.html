@@ -3,57 +3,402 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Тестовый сайт</title>
+  <title>lforgpt5, личная страница</title>
+  <meta name="description" content="Минималистичная личная страница с проектами и контактами." />
   <style>
     :root {
-      color-scheme: light dark;
-      --bg: #0b1020;
-      --card: rgba(255,255,255,0.08);
-      --text: #f3f6ff;
-      --muted: #b9c2e0;
-      --accent: #7c9cff;
+      --bg: #07111f;
+      --bg-soft: #0d1b31;
+      --panel: rgba(12, 24, 44, 0.78);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --text: #eef4ff;
+      --muted: #a9b8d6;
+      --accent: #79a8ff;
+      --accent-2: #8ef0d0;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: Inter, system-ui, sans-serif;
-      background: radial-gradient(circle at top, #1a2342, var(--bg));
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(121, 168, 255, 0.18), transparent 32%),
+        radial-gradient(circle at top right, rgba(142, 240, 208, 0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg-soft), var(--bg));
+      min-height: 100vh;
     }
-    .card {
-      width: min(680px, calc(100% - 32px));
-      padding: 32px;
-      border-radius: 20px;
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3.5rem); }
-    p { margin: 0; line-height: 1.6; color: var(--muted); font-size: 1.1rem; }
-    .badge {
-      display: inline-block;
-      margin-bottom: 18px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(124,156,255,0.16);
-      color: #dbe4ff;
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      padding: 20px 0;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      background: rgba(8, 16, 30, 0.55);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .nav {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
       font-size: 0.95rem;
     }
-    strong { color: var(--text); }
-    a { color: #cdd8ff; }
+
+    .nav a:hover,
+    .links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 44px 0 28px;
+    }
+
+    .hero-card {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      padding: 36px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(121, 168, 255, 0.12);
+      color: #dce8ff;
+      font-size: 0.92rem;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.5rem, 6vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--accent), #5d86ff);
+      color: #06101f;
+      box-shadow: 0 12px 30px rgba(121, 168, 255, 0.3);
+    }
+
+    .button.secondary {
+      border-color: var(--panel-border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .info-card,
+    .project,
+    .contact {
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 18px;
+    }
+
+    .info-card strong,
+    .project h3,
+    .contact h3 {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .info-card p,
+    .project p,
+    .contact p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section {
+      padding: 18px 0 32px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-note {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(142, 240, 208, 0.12);
+      color: #c9fff0;
+      font-size: 0.82rem;
+    }
+
+    .project a {
+      margin-top: 18px;
+      color: #dbe7ff;
+      font-weight: 600;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 24px 0 44px;
+      color: #90a0bf;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 920px) {
+      .hero-card,
+      .contact-wrap,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100% - 20px, 1120px);
+      }
+
+      .hero-card {
+        padding: 24px;
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="badge">GitHub Pages • тест обновления</div>
-    <h1>Сайт обновлён 🚀</h1>
-    <p>
-      Это тестовая страница для <strong>lforgpt5.github.io</strong>.
-      Обновление выполнено через OpenClaw и запушено в GitHub.
-    </p>
+  <header class="topbar wrap">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">lforgpt5</a>
+      <nav class="nav">
+        <a href="#projects">Проекты</a>
+        <a href="#about">О странице</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <section class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="eyebrow">Обновлено через OpenClaw 🚀</div>
+          <h1>Простая и аккуратная личная страница</h1>
+          <p class="lead">
+            Это минималистичный старт для GitHub Pages. Здесь можно быстро собрать
+            витрину проектов, ссылки на контакты, короткое описание и всё, что нужно
+            для чистой домашней страницы без лишнего шума.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#projects">Посмотреть проекты</a>
+            <a class="button secondary" href="https://github.com/lforgpt5" target="_blank" rel="noreferrer">GitHub профиль</a>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="info-card">
+            <strong>Что это</strong>
+            <p>Тестовая, но уже прилично оформленная главная страница для репозитория <code>lforgpt5.github.io</code>.</p>
+          </div>
+          <div class="info-card">
+            <strong>Зачем</strong>
+            <p>Чтобы было от чего оттолкнуться: дальше сюда легко добавить реальные проекты, bio, CTA и ссылки.</p>
+          </div>
+          <div class="info-card">
+            <strong>Стек</strong>
+            <p>Чистый HTML и CSS, без сборки, без зависимостей, открывается и деплоится мгновенно.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Проекты</h2>
+          <p class="section-note">Примеры карточек, которые можно заменить на реальные ссылки и описания.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <article class="project">
+          <div>
+            <span class="tag">GitHub Pages</span>
+            <h3>Личный сайт</h3>
+            <p>Базовый лендинг, который можно превратить в портфолио, персональную визитку или страницу со ссылками.</p>
+          </div>
+          <a href="https://lforgpt5.github.io/" target="_blank" rel="noreferrer">Открыть сайт</a>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="tag">GitHub</span>
+            <h3>Репозитории</h3>
+            <p>Место для кода, экспериментов, заметок и небольших публичных проектов, которые хочется держать под рукой.</p>
+          </div>
+          <a href="https://github.com/lforgpt5" target="_blank" rel="noreferrer">Перейти в профиль</a>
+        </article>
+
+        <article class="project">
+          <div>
+            <span class="tag">OpenClaw</span>
+            <h3>Быстрые обновления</h3>
+            <p>Эта страница специально сделана простой, чтобы её было удобно менять прямо из среды без лишней инфраструктуры.</p>
+          </div>
+          <a href="#contact">Настроить дальше</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="contact-wrap">
+        <article class="contact">
+          <h3>О странице</h3>
+          <p>
+            Сейчас это аккуратная заготовка. Следующим шагом сюда можно добавить настоящее
+            описание, список технологий, блок с кейсами, ссылки на Telegram, GitHub,
+            email и всё остальное, что должно быть на персональном сайте.
+          </p>
+        </article>
+
+        <article id="contact" class="contact">
+          <h3>Контакты и ссылки</h3>
+          <p>Заполни этот блок своими реальными ссылками, когда захочешь превратить заготовку в нормальную визитку.</p>
+          <div class="links">
+            <a href="https://github.com/lforgpt5" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:lforgpt5@gmail.com">Email</a>
+            <a href="https://t.me/" target="_blank" rel="noreferrer">Telegram</a>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer wrap">
+    <span>Сделано как лёгкая стартовая страница для GitHub Pages.</span>
+  </footer>
 </body>
 </html>
