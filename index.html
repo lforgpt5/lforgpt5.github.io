@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QFlow, прототип системы электронной очереди</title>
-  <meta name="description" content="Прототип интерфейса системы электронной очереди с табло, выдачей талонов, меню клиента и админ-панелью." />
+  <title>LinkSpace, прототип социальной деловой сети</title>
+  <meta name="description" content="Одностраничный прототип главной страницы деловой социальной сети в духе LinkedIn." />
   <style>
     :root {
-      --bg: #0b1220;
-      --bg-soft: #121b2f;
-      --panel: rgba(18, 27, 47, 0.88);
-      --panel-2: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #edf3ff;
-      --muted: #9aabc9;
-      --accent: #58a6ff;
-      --accent-2: #7ef0c7;
-      --danger: #ff7a9a;
-      --warning: #ffc96b;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-      --radius: 24px;
-      --radius-sm: 16px;
-      --max: 1280px;
+      --bg: #eef3f8;
+      --surface: #ffffff;
+      --surface-soft: #f7f9fc;
+      --border: #dbe3ee;
+      --text: #1f2f46;
+      --muted: #68778f;
+      --accent: #5d7cff;
+      --accent-dark: #4768f0;
+      --success: #168d67;
+      --warning: #d58512;
+      --shadow: 0 16px 40px rgba(31, 47, 70, 0.08);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --max: 1240px;
     }
 
     * {
@@ -33,10 +32,9 @@
       font-family: Inter, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(88, 166, 255, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(126, 240, 199, 0.08), transparent 24%),
-        linear-gradient(180deg, #11182a 0%, var(--bg) 100%);
-      line-height: 1.5;
+        radial-gradient(circle at top right, rgba(93, 124, 255, 0.08), transparent 24%),
+        linear-gradient(180deg, #f6f9fd 0%, var(--bg) 100%);
+      line-height: 1.45;
     }
 
     a {
@@ -49,887 +47,666 @@
       margin: 0 auto;
     }
 
-    .top {
-      padding: 20px 0 14px;
+    .topbar-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(246, 249, 253, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(219, 227, 238, 0.8);
     }
 
     .topbar {
-      display: flex;
+      min-height: 78px;
+      display: grid;
+      grid-template-columns: 280px 1fr auto;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 18px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(8, 13, 24, 0.7);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      gap: 18px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #7b8cff);
-      color: #07111f;
       font-weight: 800;
     }
 
-    .brand-text strong {
-      display: block;
-      font-size: 1rem;
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), #8aa0ff);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(93, 124, 255, 0.25);
     }
 
-    .brand-text span {
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      min-height: 48px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 18px rgba(31, 47, 70, 0.03);
       color: var(--muted);
-      font-size: 0.9rem;
     }
 
-    .top-actions {
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      font: inherit;
+      color: var(--text);
+    }
+
+    .nav {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.92rem;
     }
 
-    .pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-    }
-
-    .hero {
-      padding: 18px 0 22px;
-    }
-
-    .hero-card {
-      padding: 32px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(21, 33, 59, 0.96), rgba(11, 18, 32, 0.96));
-      box-shadow: var(--shadow);
-    }
-
-    .eyebrow {
-      display: inline-flex;
+    .nav-item {
+      display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(88, 166, 255, 0.12);
-      color: #d7e8ff;
-      font-size: 0.92rem;
-      margin-bottom: 16px;
-    }
-
-    h1, h2, h3, h4 {
-      margin: 0;
-      line-height: 1.1;
-    }
-
-    h1 {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      letter-spacing: -0.04em;
-      max-width: 900px;
-    }
-
-    .hero-copy {
-      margin: 16px 0 0;
-      max-width: 760px;
       color: var(--muted);
-      font-size: 1.06rem;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 28px;
-    }
-
-    .stat {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 1.45rem;
-      margin-bottom: 6px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .tabs-wrap {
-      padding: 8px 0 36px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      overflow: auto;
-      padding-bottom: 6px;
-      scrollbar-width: thin;
-    }
-
-    .tab-button {
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text);
-      padding: 12px 16px;
-      border-radius: 14px;
-      font: inherit;
-      cursor: pointer;
-      white-space: nowrap;
+      font-size: 0.94rem;
       transition: 0.2s ease;
     }
 
-    .tab-button.active {
-      background: linear-gradient(135deg, rgba(88, 166, 255, 0.22), rgba(126, 240, 199, 0.14));
-      border-color: rgba(88, 166, 255, 0.4);
-      color: #ffffff;
+    .nav-item.active,
+    .nav-item:hover {
+      background: rgba(93, 124, 255, 0.1);
+      color: var(--accent-dark);
     }
 
-    .tab-panel {
-      display: none;
-      margin-top: 18px;
-      padding: 24px;
-      border-radius: var(--radius);
+    .layout {
+      padding: 26px 0 38px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 300px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--surface);
       border: 1px solid var(--border);
-      background: var(--panel);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
 
-    .tab-panel.active {
-      display: block;
+    .profile-card {
+      overflow: hidden;
     }
 
-    .panel-head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
+    .cover {
+      height: 92px;
+      background: linear-gradient(135deg, #7c91ff, #4ec7d9);
     }
 
-    .panel-head p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      max-width: 760px;
+    .profile-body {
+      padding: 0 20px 20px;
     }
 
-    .screen-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 0.9fr;
-      gap: 18px;
-    }
-
-    .board {
-      padding: 18px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .board-title {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .badge-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent-2);
-      font-size: 0.9rem;
-    }
-
-    .badge-live::before {
-      content: "";
-      width: 8px;
-      height: 8px;
+    .avatar {
+      width: 78px;
+      height: 78px;
+      margin-top: -39px;
       border-radius: 50%;
-      background: currentColor;
-      box-shadow: 0 0 0 6px rgba(126, 240, 199, 0.12);
-    }
-
-    .video-zone {
-      min-height: 260px;
-      border-radius: 18px;
-      border: 1px dashed rgba(255, 255, 255, 0.14);
-      background:
-        linear-gradient(135deg, rgba(88, 166, 255, 0.12), rgba(255,255,255,0.02)),
-        rgba(255,255,255,0.02);
+      border: 4px solid #fff;
+      background: linear-gradient(135deg, #ebefff, #bed9ff);
       display: grid;
       place-items: center;
-      color: #dce9ff;
-      text-align: center;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .queue-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .queue-row,
-    .service-row,
-    .admin-row,
-    .settings-row {
-      display: grid;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .queue-row {
-      grid-template-columns: 120px 1fr 120px;
-    }
-
-    .ticket-number {
+      font-size: 1.4rem;
       font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      color: var(--accent-dark);
     }
 
-    .window {
-      text-align: right;
-      color: #dce8ff;
-      font-weight: 700;
+    .profile-body h2,
+    .section-title,
+    .composer h3,
+    .feed-card h3,
+    .side-card h3 {
+      margin: 0;
     }
 
-    .side-stack {
-      display: grid;
-      gap: 18px;
+    .profile-body h2 {
+      margin-top: 16px;
+      font-size: 1.22rem;
     }
 
-    .mini-card {
-      padding: 18px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .mini-card p,
-    .info-text,
-    .service-note,
     .muted {
       color: var(--muted);
     }
 
-    .service-tree {
+    .profile-stats,
+    .menu-list,
+    .news-list,
+    .people-list {
       display: grid;
-      gap: 14px;
+      gap: 12px;
+      margin-top: 18px;
     }
 
-    .service-group {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .stat-row,
+    .menu-row,
+    .news-row,
+    .people-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
     }
 
-    .service-group h4 {
-      margin-bottom: 12px;
-      font-size: 1rem;
+    .section {
+      padding: 18px 20px;
+      border-top: 1px solid var(--border);
     }
 
-    .subtree {
-      display: grid;
-      gap: 10px;
-      padding-left: 14px;
-      border-left: 2px solid rgba(88, 166, 255, 0.22);
-    }
-
-    .service-row {
-      grid-template-columns: 1fr auto;
-    }
-
-    .service-row button,
-    .action,
-    .admin-action {
-      border: 0;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font: inherit;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .service-row button,
-    .action.primary,
-    .admin-action.primary {
-      background: var(--accent);
-      color: #07111f;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(22, 141, 103, 0.1);
+      color: var(--success);
+      font-size: 0.84rem;
       font-weight: 700;
     }
 
-    .action.secondary,
-    .admin-action.secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      border: 1px solid var(--border);
+    .center-col {
+      display: grid;
+      gap: 18px;
     }
 
-    .action.warning {
-      background: rgba(255, 201, 107, 0.18);
-      color: #ffe8b4;
-      border: 1px solid rgba(255, 201, 107, 0.14);
+    .hero-card {
+      padding: 24px;
+      background: linear-gradient(135deg, rgba(93, 124, 255, 0.08), rgba(255,255,255,0.96));
     }
 
-    .action.danger {
-      background: rgba(255, 122, 154, 0.18);
-      color: #ffd3df;
-      border: 1px solid rgba(255, 122, 154, 0.18);
+    .hero-card h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: 760px;
     }
 
-    .action:hover,
-    .admin-action:hover,
-    .service-row button:hover,
-    .tab-button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
+    .hero-card p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 1.03rem;
     }
 
-    .ticket-actions {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 22px;
     }
 
-    .ticket-panel {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: 0.2s ease;
     }
 
-    .client-focus {
+    .button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--accent-dark);
+      border-color: rgba(93, 124, 255, 0.22);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .composer {
       padding: 20px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, rgba(88, 166, 255, 0.14), rgba(255,255,255,0.03));
-      border: 1px solid rgba(88, 166, 255, 0.16);
     }
 
-    .client-number {
-      font-size: clamp(2rem, 4vw, 3.2rem);
+    .composer-top {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .mini-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #dfe7ff, #bdd4ff);
+      display: grid;
+      place-items: center;
       font-weight: 800;
-      letter-spacing: 0.04em;
-      margin: 6px 0 10px;
+      color: var(--accent-dark);
+      flex: 0 0 auto;
     }
 
-    .kpi-grid {
+    .composer-box {
+      width: 100%;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--muted);
+    }
+
+    .composer-actions {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
-    .kpi {
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .quick-action {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 600;
+      text-align: center;
     }
 
-    .kpi strong {
-      display: block;
-      font-size: 1.4rem;
-      margin-bottom: 6px;
+    .feed-card {
+      padding: 20px;
     }
 
-    .admin-layout {
+    .feed-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .author {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .author .mini-avatar {
+      width: 48px;
+      height: 48px;
+    }
+
+    .feed-card p {
+      color: var(--text);
+      margin: 16px 0;
+    }
+
+    .mock-media {
+      min-height: 220px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(93, 124, 255, 0.12), rgba(78, 199, 217, 0.1)),
+        var(--surface-soft);
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      place-items: center;
+      color: var(--muted);
+      text-align: center;
+      padding: 16px;
+    }
+
+    .feed-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .feed-action {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+    }
+
+    .side-col {
+      display: grid;
       gap: 18px;
     }
 
-    .admin-list,
-    .settings-list {
+    .side-card {
+      padding: 20px;
+    }
+
+    .trend-tag {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(93, 124, 255, 0.08);
+      color: var(--accent-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .people-row {
+      align-items: flex-start;
+    }
+
+    .people-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ebeefe, #d2efff);
+      flex: 0 0 auto;
+    }
+
+    .follow {
+      margin-top: 8px;
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(93, 124, 255, 0.2);
+      color: var(--accent-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .ad-card {
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(22, 141, 103, 0.08), rgba(255,255,255,1));
+    }
+
+    .ad-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .ad-box {
+      margin-top: 16px;
+      min-height: 180px;
+      border-radius: 18px;
+      border: 1px dashed rgba(22, 141, 103, 0.2);
       display: grid;
-      gap: 12px;
-    }
-
-    .admin-row {
-      grid-template-columns: 1fr auto;
-    }
-
-    .settings-row {
-      grid-template-columns: 1fr auto;
-    }
-
-    .footer {
-      padding: 0 0 40px;
+      place-items: center;
       color: var(--muted);
-      font-size: 0.94rem;
+      background: rgba(22, 141, 103, 0.06);
+      text-align: center;
+      padding: 16px;
     }
 
-    @media (max-width: 980px) {
-      .stats,
-      .screen-grid,
-      .ticket-panel,
-      .admin-layout,
-      .kpi-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 260px minmax(0, 1fr);
       }
 
-      .queue-row {
-        grid-template-columns: 1fr;
-      }
-
-      .window {
-        text-align: left;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .container {
-        width: min(calc(100% - 20px), var(--max));
-      }
-
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .hero-card,
-      .tab-panel {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      .stats {
+      .side-col {
+        grid-column: 1 / -1;
         grid-template-columns: 1fr 1fr;
       }
     }
 
-    @media (max-width: 520px) {
-      .stats {
+    @media (max-width: 860px) {
+      .topbar {
+        grid-template-columns: 1fr;
+        padding: 14px 0;
+      }
+
+      .layout {
         grid-template-columns: 1fr;
       }
 
-      .service-row,
-      .admin-row,
-      .settings-row {
+      .side-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(calc(100% - 20px), var(--max));
+      }
+
+      .composer-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-actions,
+      .feed-footer,
+      .nav {
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .composer-actions {
         grid-template-columns: 1fr;
       }
 
-      .ticket-actions {
-        flex-direction: column;
-      }
-
-      .action,
-      .admin-action,
-      .service-row button,
-      .tab-button {
+      .button,
+      .feed-action,
+      .quick-action {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <header class="top container">
-    <div class="topbar">
+  <div class="topbar-wrap">
+    <header class="topbar container">
       <div class="brand">
-        <div class="brand-mark">Q</div>
-        <div class="brand-text">
-          <strong>QFlow</strong>
-          <span>Прототип системы электронной очереди</span>
-        </div>
+        <div class="brand-mark">LS</div>
+        <span>LinkSpace</span>
       </div>
-      <div class="top-actions">
-        <span class="pill">Веб-интерфейс</span>
-        <span class="pill">4 рабочих вкладки</span>
-        <span class="pill">Готово для демо</span>
-      </div>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-card">
-        <div class="eyebrow">Интерфейс для отделения, фронт-офиса или сервисного центра</div>
-        <h1>Кликабельный прототип электронной очереди с табло, талонами, рабочим местом оператора и админ-панелью</h1>
-        <p class="hero-copy">
-          Это демонстрационный UI-концепт, в котором собраны основные экраны системы: главное табло,
-          страница выдачи талонов, меню клиента для оператора и панель администратора для настройки услуг.
+      <label class="search" aria-label="Поиск">
+        <span>🔎</span>
+        <input type="text" value="Поиск людей, вакансий, публикаций" readonly />
+      </label>
+
+      <nav class="nav">
+        <a class="nav-item active" href="#">Лента</a>
+        <a class="nav-item" href="#">Моя сеть</a>
+        <a class="nav-item" href="#">Вакансии</a>
+        <a class="nav-item" href="#">Сообщения</a>
+        <a class="nav-item" href="#">Уведомления</a>
+      </nav>
+    </header>
+  </div>
+
+  <main class="container layout">
+    <aside>
+      <section class="card profile-card">
+        <div class="cover"></div>
+        <div class="profile-body">
+          <div class="avatar">AN</div>
+          <h2>Андрей Н.</h2>
+          <p class="muted">Product-minded developer • automation • AI workflows</p>
+
+          <div class="profile-stats">
+            <div class="stat-row"><span class="muted">Просмотры профиля</span><strong>248</strong></div>
+            <div class="stat-row"><span class="muted">Показы публикаций</span><strong>1 842</strong></div>
+            <div class="stat-row"><span class="muted">Сохранено контактов</span><strong>67</strong></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="badge">Premium ideas</div>
+          <p class="muted" style="margin-top:10px;">Открой аналитику по постам, доступ к подборкам контактов и расширенный поиск.</p>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title">Быстрые разделы</h3>
+          <div class="menu-list">
+            <div class="menu-row"><span class="muted">Закладки</span><strong>12</strong></div>
+            <div class="menu-row"><span class="muted">Мои проекты</span><strong>5</strong></div>
+            <div class="menu-row"><span class="muted">Черновики</span><strong>3</strong></div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="center-col">
+      <article class="card hero-card">
+        <h1>Главная страница деловой сети в стиле LinkedIn, но с более мягкой и свежей палитрой</h1>
+        <p>
+          Здесь собраны ключевые паттерны: шапка с поиском, карточка профиля, лента, публикации,
+          новости, рекомендации контактов и рекламный/промо-блок. Это хороший старт для прототипа,
+          презентации или дальнейшей продуктовой доработки.
         </p>
-        <div class="stats">
-          <div class="stat">
-            <strong>4</strong>
-            <span>основные вкладки интерфейса</span>
-          </div>
-          <div class="stat">
-            <strong>12+</strong>
-            <span>примеров услуг и сценариев</span>
-          </div>
-          <div class="stat">
-            <strong>6</strong>
-            <span>операторских действий по клиенту</span>
-          </div>
-          <div class="stat">
-            <strong>1</strong>
-            <span>одностраничный веб-прототип</span>
-          </div>
+        <div class="hero-actions">
+          <a class="button primary" href="#">Создать публикацию</a>
+          <a class="button secondary" href="#">Открыть профиль</a>
         </div>
-      </div>
+      </article>
+
+      <section class="card composer">
+        <div class="composer-top">
+          <div class="mini-avatar">AN</div>
+          <div class="composer-box">О чём вы хотите рассказать сегодня?</div>
+        </div>
+        <div class="composer-actions">
+          <div class="quick-action">📷 Фото</div>
+          <div class="quick-action">🎥 Видео</div>
+          <div class="quick-action">📝 Статья</div>
+          <div class="quick-action">📅 Событие</div>
+        </div>
+      </section>
+
+      <article class="card feed-card">
+        <div class="feed-head">
+          <div class="author">
+            <div class="mini-avatar">IK</div>
+            <div>
+              <h3>Ирина Ковалёва</h3>
+              <div class="muted">Head of Product • 2 ч назад</div>
+            </div>
+          </div>
+          <span class="muted">•••</span>
+        </div>
+
+        <p>
+          Нормальный продукт растёт не от количества фич, а от качества сценариев.
+          Мы пересобрали onboarding, убрали лишние шаги и получили лучший отклик, чем от трёх прошлых релизов вместе.
+        </p>
+
+        <div class="mock-media">Здесь может быть превью изображения, продукта, диаграммы или слайда презентации</div>
+
+        <div class="feed-footer">
+          <div class="feed-action">👍 Нравится</div>
+          <div class="feed-action">💬 Комментировать</div>
+          <div class="feed-action">🔁 Репост</div>
+          <div class="feed-action">✉️ Отправить</div>
+        </div>
+      </article>
+
+      <article class="card feed-card">
+        <div class="feed-head">
+          <div class="author">
+            <div class="mini-avatar">MS</div>
+            <div>
+              <h3>Max Studio</h3>
+              <div class="muted">UX Research • Вчера</div>
+            </div>
+          </div>
+          <span class="muted">•••</span>
+        </div>
+
+        <p>
+          Прототипы выигрывают, когда у них есть не только красивый экран, но и ощущение реального продукта:
+          контент, состояние интерфейса, микроиерархия и понятный фокус внимания.
+        </p>
+
+        <div class="feed-footer">
+          <div class="feed-action">👍 124</div>
+          <div class="feed-action">💬 18 комментариев</div>
+          <div class="feed-action">🔖 Сохранить</div>
+        </div>
+      </article>
     </section>
 
-    <section class="tabs-wrap">
-      <div class="tabs" role="tablist" aria-label="Разделы прототипа">
-        <button class="tab-button active" data-tab="board" role="tab" aria-selected="true">1. Главное табло</button>
-        <button class="tab-button" data-tab="tickets" role="tab" aria-selected="false">2. Выдача талонов</button>
-        <button class="tab-button" data-tab="client" role="tab" aria-selected="false">3. Меню клиента</button>
-        <button class="tab-button" data-tab="admin" role="tab" aria-selected="false">4. Панель администратора</button>
-      </div>
-
-      <section id="board" class="tab-panel active" role="tabpanel">
-        <div class="panel-head">
-          <div>
-            <h2>Главное табло</h2>
-            <p>Экран для зоны ожидания: рекламный блок, текущие вызовы и информация о распределении клиентов по окнам.</p>
-          </div>
-          <span class="badge-live">Онлайн обновление</span>
-        </div>
-
-        <div class="screen-grid">
-          <div class="board">
-            <div class="board-title">
-              <h3>Зона медиаконтента</h3>
-              <span class="muted">1920×1080 / ролики / баннеры</span>
-            </div>
-            <div class="video-zone">
-              <div>
-                <strong style="display:block; font-size:1.3rem; margin-bottom:10px;">Область для проигрывания рекламы</strong>
-                <span class="muted">Здесь могут быть видео, статичные промо-блоки, продукты банка, акции или инструкции для клиентов.</span>
-              </div>
-            </div>
-
-            <div class="board-title">
-              <h3>Текущие вызовы</h3>
-              <span class="muted">Последнее обновление: сейчас</span>
-            </div>
-            <div class="queue-list">
-              <div class="queue-row">
-                <div class="ticket-number">A102</div>
-                <div>Открытие счёта, консультация по продуктам</div>
-                <div class="window">Окно 3</div>
-              </div>
-              <div class="queue-row">
-                <div class="ticket-number">B017</div>
-                <div>Пополнение карты, кассовая операция</div>
-                <div class="window">Окно 1</div>
-              </div>
-              <div class="queue-row">
-                <div class="ticket-number">C204</div>
-                <div>Выдача документов и сопровождение договора</div>
-                <div class="window">Окно 5</div>
-              </div>
-              <div class="queue-row">
-                <div class="ticket-number">VIP08</div>
-                <div>Персональный менеджер, обслуживание приоритетной очереди</div>
-                <div class="window">Каб. 2</div>
-              </div>
+    <aside class="side-col">
+      <section class="card side-card">
+        <h3>Новости и тренды</h3>
+        <div class="news-list">
+          <div class="news-row">
+            <div>
+              <strong>AI-инструменты для продуктовых команд</strong>
+              <div class="muted">1 284 обсуждения сегодня</div>
             </div>
           </div>
-
-          <aside class="side-stack">
-            <div class="mini-card">
-              <h3>Быстрая статистика</h3>
-              <p class="info-text">Короткие показатели для дежурного администратора и контроля загрузки отделения.</p>
-              <div class="kpi-grid">
-                <div class="kpi"><strong>27</strong><span class="muted">в ожидании</span></div>
-                <div class="kpi"><strong>6</strong><span class="muted">окон активно</span></div>
-                <div class="kpi"><strong>09:12</strong><span class="muted">среднее ожидание</span></div>
-              </div>
+          <div class="news-row">
+            <div>
+              <strong>Личный бренд разработчика</strong>
+              <div class="muted">894 обсуждения</div>
             </div>
-            <div class="mini-card">
-              <h3>Служебные сообщения</h3>
-              <p class="info-text">Можно выводить текстовые уведомления: технические паузы, изменение окна, приоритетный вызов или объявления.</p>
+          </div>
+          <div class="news-row">
+            <div>
+              <strong>Гибридная работа и remote-first команды</strong>
+              <div class="muted">612 обсуждений</div>
             </div>
-          </aside>
+          </div>
         </div>
+        <div class="trend-tag">Тренд недели</div>
       </section>
 
-      <section id="tickets" class="tab-panel" role="tabpanel">
-        <div class="panel-head">
-          <div>
-            <h2>Страница выдачи талонов</h2>
-            <p>Клиентский экран терминала с древовидной структурой услуг, кнопкой предварительной записи и выбором нужного сценария обслуживания.</p>
-          </div>
-        </div>
-
-        <div class="screen-grid">
-          <div class="board">
-            <div class="service-tree">
-              <div class="service-group">
-                <h4>Банковские операции</h4>
-                <div class="subtree">
-                  <div class="service-row">
-                    <div>
-                      <strong>Карты и счета</strong>
-                      <div class="service-note">Открытие счёта, выпуск карты, перевыпуск, смена данных</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                  <div class="service-row">
-                    <div>
-                      <strong>Кассовое обслуживание</strong>
-                      <div class="service-note">Внесение наличных, снятие, обмен, пополнение карты</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="service-group">
-                <h4>Кредиты и консультации</h4>
-                <div class="subtree">
-                  <div class="service-row">
-                    <div>
-                      <strong>Потребительский кредит</strong>
-                      <div class="service-note">Первичная консультация, расчёт условий, подача заявки</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                  <div class="service-row">
-                    <div>
-                      <strong>Ипотека и лизинг</strong>
-                      <div class="service-note">Консультации по долгосрочным финансовым продуктам</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="service-group">
-                <h4>Сервис и поддержка</h4>
-                <div class="subtree">
-                  <div class="service-row">
-                    <div>
-                      <strong>Проблема с картой или платёжным сервисом</strong>
-                      <div class="service-note">Блокировка, разблокировка, спорная операция, помощь с приложением</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                  <div class="service-row">
-                    <div>
-                      <strong>Юридические лица</strong>
-                      <div class="service-note">Расчётно-кассовое обслуживание, эквайринг, корпоративные продукты</div>
-                    </div>
-                    <button>Взять талон</button>
-                  </div>
-                </div>
-              </div>
+      <section class="card side-card">
+        <h3>Люди, которых можно знать</h3>
+        <div class="people-list">
+          <div class="people-row">
+            <div class="people-avatar"></div>
+            <div>
+              <strong>Егор С.</strong>
+              <div class="muted">Frontend lead • design systems</div>
+              <a href="#" class="follow">Подписаться</a>
             </div>
           </div>
-
-          <aside class="side-stack">
-            <div class="mini-card">
-              <h3>Быстрые действия</h3>
-              <div class="ticket-actions">
-                <button class="action primary">Предварительная запись</button>
-                <button class="action secondary">Повторная печать талона</button>
-              </div>
-            </div>
-            <div class="mini-card">
-              <h3>Сценарий терминала</h3>
-              <p class="info-text">На реальном терминале здесь можно добавить пошаговую навигацию, язык интерфейса, крупные кнопки и экран подтверждения печати талона.</p>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section id="client" class="tab-panel" role="tabpanel">
-        <div class="panel-head">
-          <div>
-            <h2>Меню клиента для оператора</h2>
-            <p>Рабочее место оператора с основной карточкой клиента и набором действий по управлению вызовом и обслуживанием.</p>
-          </div>
-        </div>
-
-        <div class="ticket-panel">
-          <div class="client-focus">
-            <span class="muted">Текущий талон</span>
-            <div class="client-number">A102</div>
-            <h3>Открытие счёта и консультация по пакету услуг</h3>
-            <p class="info-text">Клиент ожидает 06:24, приоритет обычный, оператор: Окно 3.</p>
-
-            <div class="ticket-actions">
-              <button class="action primary">Вызвать</button>
-              <button class="action danger">Отклонить</button>
-              <button class="action secondary">Перенаправить</button>
-              <button class="action warning">Отложить</button>
-              <button class="action secondary">Вызвать по номеру</button>
-              <button class="action primary">Завершить</button>
+          <div class="people-row">
+            <div class="people-avatar"></div>
+            <div>
+              <strong>Наталья П.</strong>
+              <div class="muted">HRBP • tech recruiting</div>
+              <a href="#" class="follow">Подписаться</a>
             </div>
           </div>
-
-          <div class="side-stack">
-            <div class="mini-card">
-              <h3>Информация по клиенту</h3>
-              <p class="info-text">Можно показывать комментарии, тип обращения, желаемую услугу, источник записи, время ожидания и историю движения по очереди.</p>
-            </div>
-            <div class="mini-card">
-              <h3>Операции оператора</h3>
-              <div class="queue-list">
-                <div class="queue-row" style="grid-template-columns: 1fr;">
-                  <div><strong>Вызвать</strong><div class="muted">Переводит талон в активное обслуживание и выводит вызов на табло</div></div>
-                </div>
-                <div class="queue-row" style="grid-template-columns: 1fr;">
-                  <div><strong>Перенаправить</strong><div class="muted">Отправляет клиента в другую очередь, услугу или окно</div></div>
-                </div>
-                <div class="queue-row" style="grid-template-columns: 1fr;">
-                  <div><strong>Отложить</strong><div class="muted">Временно убирает талон из активной работы с последующим возвратом</div></div>
-                </div>
-              </div>
+          <div class="people-row">
+            <div class="people-avatar"></div>
+            <div>
+              <strong>Artem Vision</strong>
+              <div class="muted">Founder • product studio</div>
+              <a href="#" class="follow">Подписаться</a>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="admin" class="tab-panel" role="tabpanel">
-        <div class="panel-head">
-          <div>
-            <h2>Панель администратора</h2>
-            <p>Экран для управления каталогом услуг, параметрами очередей, окнами обслуживания и базовыми правилами маршрутизации.</p>
-          </div>
-        </div>
-
-        <div class="admin-layout">
-          <div class="board">
-            <div class="board-title">
-              <h3>Список услуг</h3>
-              <button class="admin-action primary">Добавить услугу</button>
-            </div>
-            <div class="admin-list">
-              <div class="admin-row">
-                <div>
-                  <strong>Карты и счета</strong>
-                  <div class="muted">Код: BANK-01 • Активна • Среднее время: 15 мин</div>
-                </div>
-                <button class="admin-action secondary">Изменить</button>
-              </div>
-              <div class="admin-row">
-                <div>
-                  <strong>Кассовое обслуживание</strong>
-                  <div class="muted">Код: CASH-02 • Активна • Среднее время: 8 мин</div>
-                </div>
-                <button class="admin-action secondary">Изменить</button>
-              </div>
-              <div class="admin-row">
-                <div>
-                  <strong>Кредиты и консультации</strong>
-                  <div class="muted">Код: CREDIT-07 • Активна • Требуется специалист</div>
-                </div>
-                <button class="admin-action secondary">Изменить</button>
-              </div>
-              <div class="admin-row">
-                <div>
-                  <strong>Юридические лица</strong>
-                  <div class="muted">Код: B2B-12 • Активна • Приоритет: средний</div>
-                </div>
-                <button class="admin-action secondary">Изменить</button>
-              </div>
-            </div>
-          </div>
-
-          <aside class="side-stack">
-            <div class="mini-card">
-              <h3>Параметры услуги</h3>
-              <div class="settings-list">
-                <div class="settings-row">
-                  <div>
-                    <strong>Среднее время обслуживания</strong>
-                    <div class="muted">Используется в расчёте загрузки и SLA</div>
-                  </div>
-                  <span>15 мин</span>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    <strong>Доступные окна</strong>
-                    <div class="muted">Какие операторы могут обслуживать эту услугу</div>
-                  </div>
-                  <span>1, 3, 5</span>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    <strong>Приоритет</strong>
-                    <div class="muted">Обычный, высокий, VIP, служебный</div>
-                  </div>
-                  <span>Обычный</span>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    <strong>Предварительная запись</strong>
-                    <div class="muted">Разрешать запись заранее для этой услуги</div>
-                  </div>
-                  <span>Да</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="mini-card">
-              <h3>Что ещё можно добавить</h3>
-              <p class="info-text">Роли пользователей, расписания работы окон, сценарии приоритизации, интеграцию с SMS, API табло и журнал событий.</p>
-            </div>
-          </aside>
-        </div>
+      <section class="card ad-card">
+        <h3>Промо-блок</h3>
+        <p class="muted">Здесь можно разместить курс, вакансию, продуктовую подписку или рекламную интеграцию.</p>
+        <div class="ad-box">Место для брендового баннера, CTA и короткого оффера</div>
       </section>
-    </section>
+    </aside>
   </main>
-
-  <footer class="footer container">
-    <span>Прототип сделан как демонстрационный фронтенд-концепт для презентации или дальнейшей разработки.</span>
-  </footer>
-
-  <script>
-    const buttons = document.querySelectorAll('.tab-button');
-    const panels = document.querySelectorAll('.tab-panel');
-
-    buttons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const target = button.dataset.tab;
-
-        buttons.forEach((btn) => {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-selected', 'false');
-        });
-
-        panels.forEach((panel) => {
-          panel.classList.remove('active');
-        });
-
-        button.classList.add('active');
-        button.setAttribute('aria-selected', 'true');
-        document.getElementById(target).classList.add('active');
-      });
-    });
-  </script>
 </body>
 </html>
