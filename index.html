@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Фарнелл, банковское оборудование и ПО</title>
-  <meta name="description" content="Продажа, внедрение и обслуживание банковского оборудования, систем самообслуживания и программного обеспечения." />
+  <title>QFlow, прототип системы электронной очереди</title>
+  <meta name="description" content="Прототип интерфейса системы электронной очереди с табло, выдачей талонов, меню клиента и админ-панелью." />
   <style>
     :root {
-      --bg: #f4f7fb;
-      --surface: #ffffff;
-      --surface-soft: #eef3fb;
-      --text: #11233d;
-      --muted: #5d6f88;
-      --accent: #1557ff;
-      --accent-dark: #0d3fb8;
-      --border: #dbe5f2;
-      --shadow: 0 18px 50px rgba(17, 35, 61, 0.08);
-      --radius: 22px;
+      --bg: #0b1220;
+      --bg-soft: #121b2f;
+      --panel: rgba(18, 27, 47, 0.88);
+      --panel-2: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #edf3ff;
+      --muted: #9aabc9;
+      --accent: #58a6ff;
+      --accent-2: #7ef0c7;
+      --danger: #ff7a9a;
+      --warning: #ffc96b;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      --radius: 24px;
       --radius-sm: 16px;
-      --max: 1120px;
+      --max: 1280px;
     }
 
     * {
@@ -30,9 +33,10 @@
       font-family: Inter, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top right, rgba(21, 87, 255, 0.08), transparent 24%),
-        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
-      line-height: 1.55;
+        radial-gradient(circle at top left, rgba(88, 166, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(126, 240, 199, 0.08), transparent 24%),
+        linear-gradient(180deg, #11182a 0%, var(--bg) 100%);
+      line-height: 1.5;
     }
 
     a {
@@ -40,461 +44,892 @@
       text-decoration: none;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
     .container {
       width: min(var(--max), calc(100% - 32px));
       margin: 0 auto;
     }
 
-    .header {
-      padding: 18px 0;
+    .top {
+      padding: 20px 0 14px;
     }
 
-    .header__bar {
+    .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 16px;
-      padding: 14px 18px;
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(219, 229, 242, 0.9);
+      padding: 16px 18px;
+      border: 1px solid var(--border);
       border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(17, 35, 61, 0.04);
-      backdrop-filter: blur(10px);
+      background: rgba(8, 13, 24, 0.7);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    .logo {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .nav {
+    .brand {
       display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      color: var(--muted);
-      font-size: 0.95rem;
+      align-items: center;
+      gap: 12px;
     }
 
-    .nav a:hover,
-    .contact-list a:hover,
-    .link:hover {
-      color: var(--accent);
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #7b8cff);
+      color: #07111f;
+      font-weight: 800;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
     }
 
     .hero {
-      padding: 28px 0 36px;
+      padding: 18px 0 22px;
     }
 
-    .hero__grid {
-      display: grid;
-      grid-template-columns: 1.35fr 0.95fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .hero__main,
-    .hero__side,
-    .card,
-    .contact-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+    .hero-card {
+      padding: 32px;
       border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(21, 33, 59, 0.96), rgba(11, 18, 32, 0.96));
       box-shadow: var(--shadow);
     }
 
-    .hero__main {
-      padding: 40px;
-      background:
-        linear-gradient(135deg, rgba(21, 87, 255, 0.08), rgba(255,255,255,0.98) 36%),
-        var(--surface);
-    }
-
-    .hero__side {
-      padding: 28px;
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-
-    .badge {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(21, 87, 255, 0.1);
-      color: var(--accent);
-      font-weight: 700;
+      background: rgba(88, 166, 255, 0.12);
+      color: #d7e8ff;
       font-size: 0.92rem;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
       margin: 0;
       line-height: 1.1;
     }
 
     h1 {
-      font-size: clamp(2.2rem, 5vw, 4.4rem);
+      font-size: clamp(2.2rem, 5vw, 4rem);
       letter-spacing: -0.04em;
-      max-width: 720px;
+      max-width: 900px;
     }
 
-    .lead {
-      margin: 18px 0 0;
+    .hero-copy {
+      margin: 16px 0 0;
+      max-width: 760px;
       color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 700px;
+      font-size: 1.06rem;
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
       margin-top: 28px;
     }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 20px;
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .tabs-wrap {
+      padding: 8px 0 36px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      overflow: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+
+    .tab-button {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 12px 16px;
       border-radius: 14px;
-      font-weight: 700;
+      font: inherit;
+      cursor: pointer;
+      white-space: nowrap;
       transition: 0.2s ease;
     }
 
-    .button--primary {
-      background: var(--accent);
-      color: #fff;
+    .tab-button.active {
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.22), rgba(126, 240, 199, 0.14));
+      border-color: rgba(88, 166, 255, 0.4);
+      color: #ffffff;
     }
 
-    .button--secondary {
-      background: var(--surface-soft);
-      color: var(--text);
+    .tab-panel {
+      display: none;
+      margin-top: 18px;
+      padding: 24px;
+      border-radius: var(--radius);
       border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
-    .button:hover {
-      transform: translateY(-1px);
-    }
-
-    .mini {
-      padding: 18px;
-      border-radius: var(--radius-sm);
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-    }
-
-    .mini strong {
+    .tab-panel.active {
       display: block;
-      margin-bottom: 8px;
-      font-size: 1rem;
     }
 
-    .mini p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .section {
-      padding: 14px 0 34px;
-    }
-
-    .section-head {
+    .panel-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
       margin-bottom: 18px;
     }
 
-    .section-head h2 {
-      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
-      letter-spacing: -0.03em;
-    }
-
-    .section-head p {
-      margin: 10px 0 0;
+    .panel-head p {
+      margin: 8px 0 0;
       color: var(--muted);
       max-width: 760px;
     }
 
-    .grid {
+    .screen-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1.5fr 0.9fr;
       gap: 18px;
     }
 
-    .card {
-      padding: 24px;
+    .board {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
     }
 
-    .card h3 {
-      font-size: 1.12rem;
-      margin-bottom: 10px;
+    .board-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
-    .card p,
-    .about p,
-    .contact-card p,
-    .contact-list {
-      margin: 0;
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-2);
+      font-size: 0.9rem;
+    }
+
+    .badge-live::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 6px rgba(126, 240, 199, 0.12);
+    }
+
+    .video-zone {
+      min-height: 260px;
+      border-radius: 18px;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      background:
+        linear-gradient(135deg, rgba(88, 166, 255, 0.12), rgba(255,255,255,0.02)),
+        rgba(255,255,255,0.02);
+      display: grid;
+      place-items: center;
+      color: #dce9ff;
+      text-align: center;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .queue-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .queue-row,
+    .service-row,
+    .admin-row,
+    .settings-row {
+      display: grid;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .queue-row {
+      grid-template-columns: 120px 1fr 120px;
+    }
+
+    .ticket-number {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: 0.03em;
+    }
+
+    .window {
+      text-align: right;
+      color: #dce8ff;
+      font-weight: 700;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .mini-card p,
+    .info-text,
+    .service-note,
+    .muted {
       color: var(--muted);
     }
 
-    .facts {
+    .service-tree {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+      gap: 14px;
     }
 
-    .fact {
+    .service-group {
       padding: 18px;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .fact strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 1.4rem;
-      color: var(--accent-dark);
+    .service-group h4 {
+      margin-bottom: 12px;
+      font-size: 1rem;
     }
 
-    .about {
+    .subtree {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
+      gap: 10px;
+      padding-left: 14px;
+      border-left: 2px solid rgba(88, 166, 255, 0.22);
     }
 
-    .contact-grid {
+    .service-row {
+      grid-template-columns: 1fr auto;
+    }
+
+    .service-row button,
+    .action,
+    .admin-action {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .service-row button,
+    .action.primary,
+    .admin-action.primary {
+      background: var(--accent);
+      color: #07111f;
+      font-weight: 700;
+    }
+
+    .action.secondary,
+    .admin-action.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .action.warning {
+      background: rgba(255, 201, 107, 0.18);
+      color: #ffe8b4;
+      border: 1px solid rgba(255, 201, 107, 0.14);
+    }
+
+    .action.danger {
+      background: rgba(255, 122, 154, 0.18);
+      color: #ffd3df;
+      border: 1px solid rgba(255, 122, 154, 0.18);
+    }
+
+    .action:hover,
+    .admin-action:hover,
+    .service-row button:hover,
+    .tab-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .ticket-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .ticket-panel {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
     }
 
-    .contact-card {
-      padding: 24px;
+    .client-focus {
+      padding: 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.14), rgba(255,255,255,0.03));
+      border: 1px solid rgba(88, 166, 255, 0.16);
     }
 
-    .contact-list {
+    .client-number {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin: 6px 0 10px;
+    }
+
+    .kpi-grid {
       display: grid;
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .kpi {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .admin-list,
+    .settings-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .admin-row {
+      grid-template-columns: 1fr auto;
+    }
+
+    .settings-row {
+      grid-template-columns: 1fr auto;
     }
 
     .footer {
-      padding: 18px 0 40px;
+      padding: 0 0 40px;
       color: var(--muted);
       font-size: 0.94rem;
     }
 
-    @media (max-width: 960px) {
-      .hero__grid,
-      .about,
-      .contact-grid,
-      .grid,
-      .facts {
+    @media (max-width: 980px) {
+      .stats,
+      .screen-grid,
+      .ticket-panel,
+      .admin-layout,
+      .kpi-grid {
         grid-template-columns: 1fr;
+      }
+
+      .queue-row {
+        grid-template-columns: 1fr;
+      }
+
+      .window {
+        text-align: left;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 720px) {
       .container {
         width: min(calc(100% - 20px), var(--max));
       }
 
-      .header__bar {
+      .topbar {
         flex-direction: column;
         align-items: flex-start;
       }
 
-      .hero__main,
-      .hero__side,
-      .card,
-      .contact-card {
+      .hero-card,
+      .tab-panel {
         padding: 20px;
       }
 
       h1 {
-        font-size: 2.1rem;
+        font-size: 2rem;
       }
 
-      .lead {
-        font-size: 1rem;
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .stats {
+        grid-template-columns: 1fr;
       }
 
-      .actions {
+      .service-row,
+      .admin-row,
+      .settings-row {
+        grid-template-columns: 1fr;
+      }
+
+      .ticket-actions {
         flex-direction: column;
       }
 
-      .button {
+      .action,
+      .admin-action,
+      .service-row button,
+      .tab-button {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <header class="header container">
-    <div class="header__bar">
-      <a href="#top" class="logo">Фарнелл</a>
-      <nav class="nav">
-        <a href="#catalog">Каталог</a>
-        <a href="#about">О компании</a>
-        <a href="#advantages">Преимущества</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
+  <header class="top container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">Q</div>
+        <div class="brand-text">
+          <strong>QFlow</strong>
+          <span>Прототип системы электронной очереди</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="pill">Веб-интерфейс</span>
+        <span class="pill">4 рабочих вкладки</span>
+        <span class="pill">Готово для демо</span>
+      </div>
     </div>
   </header>
 
-  <main id="top" class="container">
+  <main class="container">
     <section class="hero">
-      <div class="hero__grid">
-        <div class="hero__main">
-          <div class="badge">Банковское оборудование и ПО</div>
-          <h1>Продажа, внедрение и обслуживание оборудования для банков и систем самообслуживания</h1>
-          <p class="lead">
-            Фарнелл поставляет банковское оборудование, системы управления и самообслуживания,
-            а также обеспечивает сервис, поддержку и сопровождение проектов по всей Республике Беларусь.
-          </p>
-          <div class="actions">
-            <a class="button button--primary" href="#contacts">Связаться</a>
-            <a class="button button--secondary" href="#catalog">Смотреть направления</a>
+      <div class="hero-card">
+        <div class="eyebrow">Интерфейс для отделения, фронт-офиса или сервисного центра</div>
+        <h1>Кликабельный прототип электронной очереди с табло, талонами, рабочим местом оператора и админ-панелью</h1>
+        <p class="hero-copy">
+          Это демонстрационный UI-концепт, в котором собраны основные экраны системы: главное табло,
+          страница выдачи талонов, меню клиента для оператора и панель администратора для настройки услуг.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>4</strong>
+            <span>основные вкладки интерфейса</span>
+          </div>
+          <div class="stat">
+            <strong>12+</strong>
+            <span>примеров услуг и сценариев</span>
+          </div>
+          <div class="stat">
+            <strong>6</strong>
+            <span>операторских действий по клиенту</span>
+          </div>
+          <div class="stat">
+            <strong>1</strong>
+            <span>одностраничный веб-прототип</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tabs-wrap">
+      <div class="tabs" role="tablist" aria-label="Разделы прототипа">
+        <button class="tab-button active" data-tab="board" role="tab" aria-selected="true">1. Главное табло</button>
+        <button class="tab-button" data-tab="tickets" role="tab" aria-selected="false">2. Выдача талонов</button>
+        <button class="tab-button" data-tab="client" role="tab" aria-selected="false">3. Меню клиента</button>
+        <button class="tab-button" data-tab="admin" role="tab" aria-selected="false">4. Панель администратора</button>
+      </div>
+
+      <section id="board" class="tab-panel active" role="tabpanel">
+        <div class="panel-head">
+          <div>
+            <h2>Главное табло</h2>
+            <p>Экран для зоны ожидания: рекламный блок, текущие вызовы и информация о распределении клиентов по окнам.</p>
+          </div>
+          <span class="badge-live">Онлайн обновление</span>
+        </div>
+
+        <div class="screen-grid">
+          <div class="board">
+            <div class="board-title">
+              <h3>Зона медиаконтента</h3>
+              <span class="muted">1920×1080 / ролики / баннеры</span>
+            </div>
+            <div class="video-zone">
+              <div>
+                <strong style="display:block; font-size:1.3rem; margin-bottom:10px;">Область для проигрывания рекламы</strong>
+                <span class="muted">Здесь могут быть видео, статичные промо-блоки, продукты банка, акции или инструкции для клиентов.</span>
+              </div>
+            </div>
+
+            <div class="board-title">
+              <h3>Текущие вызовы</h3>
+              <span class="muted">Последнее обновление: сейчас</span>
+            </div>
+            <div class="queue-list">
+              <div class="queue-row">
+                <div class="ticket-number">A102</div>
+                <div>Открытие счёта, консультация по продуктам</div>
+                <div class="window">Окно 3</div>
+              </div>
+              <div class="queue-row">
+                <div class="ticket-number">B017</div>
+                <div>Пополнение карты, кассовая операция</div>
+                <div class="window">Окно 1</div>
+              </div>
+              <div class="queue-row">
+                <div class="ticket-number">C204</div>
+                <div>Выдача документов и сопровождение договора</div>
+                <div class="window">Окно 5</div>
+              </div>
+              <div class="queue-row">
+                <div class="ticket-number">VIP08</div>
+                <div>Персональный менеджер, обслуживание приоритетной очереди</div>
+                <div class="window">Каб. 2</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="side-stack">
+            <div class="mini-card">
+              <h3>Быстрая статистика</h3>
+              <p class="info-text">Короткие показатели для дежурного администратора и контроля загрузки отделения.</p>
+              <div class="kpi-grid">
+                <div class="kpi"><strong>27</strong><span class="muted">в ожидании</span></div>
+                <div class="kpi"><strong>6</strong><span class="muted">окон активно</span></div>
+                <div class="kpi"><strong>09:12</strong><span class="muted">среднее ожидание</span></div>
+              </div>
+            </div>
+            <div class="mini-card">
+              <h3>Служебные сообщения</h3>
+              <p class="info-text">Можно выводить текстовые уведомления: технические паузы, изменение окна, приоритетный вызов или объявления.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="tickets" class="tab-panel" role="tabpanel">
+        <div class="panel-head">
+          <div>
+            <h2>Страница выдачи талонов</h2>
+            <p>Клиентский экран терминала с древовидной структурой услуг, кнопкой предварительной записи и выбором нужного сценария обслуживания.</p>
           </div>
         </div>
 
-        <aside class="hero__side">
-          <div class="mini">
-            <strong>25+ лет опыта</strong>
-            <p>Поставка, внедрение и обслуживание специализированного оборудования и программных решений.</p>
-          </div>
-          <div class="mini">
-            <strong>Сервис по Беларуси</strong>
-            <p>Сервисные центры и представители в Минске и областных центрах.</p>
-          </div>
-          <div class="mini">
-            <strong>Полный цикл</strong>
-            <p>Поставка, диагностика, обслуживание, запасные части и подменное оборудование.</p>
-          </div>
-        </aside>
-      </div>
-    </section>
+        <div class="screen-grid">
+          <div class="board">
+            <div class="service-tree">
+              <div class="service-group">
+                <h4>Банковские операции</h4>
+                <div class="subtree">
+                  <div class="service-row">
+                    <div>
+                      <strong>Карты и счета</strong>
+                      <div class="service-note">Открытие счёта, выпуск карты, перевыпуск, смена данных</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                  <div class="service-row">
+                    <div>
+                      <strong>Кассовое обслуживание</strong>
+                      <div class="service-note">Внесение наличных, снятие, обмен, пополнение карты</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                </div>
+              </div>
 
-    <section id="catalog" class="section">
-      <div class="section-head">
-        <h2>Основные направления</h2>
-        <p>Ключевые категории оборудования и решений, с которыми работает компания.</p>
-      </div>
-      <div class="grid">
-        <article class="card">
-          <h3>Системы самообслуживания</h3>
-          <p>Почтоматы, электронные очереди, информационные киоски и другие решения для автоматизации обслуживания клиентов.</p>
-        </article>
-        <article class="card">
-          <h3>Банковское оборудование</h3>
-          <p>Принтеры и комплексы персонализации, счётчики карт, кассовая техника и сопутствующие решения.</p>
-        </article>
-        <article class="card">
-          <h3>Промышленные и складские системы</h3>
-          <p>Автоматические измерители габаритов, автоматизированные системы хранения и дополнительное оборудование.</p>
-        </article>
-      </div>
-    </section>
+              <div class="service-group">
+                <h4>Кредиты и консультации</h4>
+                <div class="subtree">
+                  <div class="service-row">
+                    <div>
+                      <strong>Потребительский кредит</strong>
+                      <div class="service-note">Первичная консультация, расчёт условий, подача заявки</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                  <div class="service-row">
+                    <div>
+                      <strong>Ипотека и лизинг</strong>
+                      <div class="service-note">Консультации по долгосрочным финансовым продуктам</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                </div>
+              </div>
 
-    <section id="about" class="section">
-      <div class="section-head">
-        <h2>О компании</h2>
-        <p>Фарнелл, официальный дистрибьютор банковского оборудования и производитель систем управления и диагностики в Республике Беларусь.</p>
-      </div>
-      <div class="about">
-        <article class="card">
-          <p>
-            Более 25 лет компания поставляет и обслуживает почтоматы, весогабаритные измерители,
-            электронные очереди и информационные киоски, обеспечивая полный спектр дополнительных услуг.
-          </p>
-          <br />
-          <p>
-            Команда состоит из квалифицированных специалистов с многолетним опытом. Это позволяет
-            выполнять проектирование, разработку, внедрение и дальнейшее сопровождение систем под задачи клиента.
-          </p>
-        </article>
-        <article id="advantages" class="card">
-          <h3>Почему выбирают Фарнелл</h3>
-          <div class="facts">
-            <div class="fact">
-              <strong>25+</strong>
-              <span>лет на рынке</span>
-            </div>
-            <div class="fact">
-              <strong>BY</strong>
-              <span>белорусское производство</span>
-            </div>
-            <div class="fact">
-              <strong>24/7</strong>
-              <span>готовность к сервисной поддержке</span>
+              <div class="service-group">
+                <h4>Сервис и поддержка</h4>
+                <div class="subtree">
+                  <div class="service-row">
+                    <div>
+                      <strong>Проблема с картой или платёжным сервисом</strong>
+                      <div class="service-note">Блокировка, разблокировка, спорная операция, помощь с приложением</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                  <div class="service-row">
+                    <div>
+                      <strong>Юридические лица</strong>
+                      <div class="service-note">Расчётно-кассовое обслуживание, эквайринг, корпоративные продукты</div>
+                    </div>
+                    <button>Взять талон</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </article>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="section-head">
-        <h2>Преимущества работы</h2>
-        <p>Упор на качество, сопровождение и индивидуальный подход к каждому проекту.</p>
-      </div>
-      <div class="grid">
-        <article class="card">
-          <h3>Индивидуальный подход</h3>
-          <p>Подбор оборудования и решений под конкретные бизнес-задачи, отрасль и формат эксплуатации.</p>
-        </article>
-        <article class="card">
-          <h3>Качество и сроки</h3>
-          <p>Гарантированное качество продукции, минимальные сроки поставки и надёжное техническое сопровождение.</p>
-        </article>
-        <article class="card">
-          <h3>Сервисная инфраструктура</h3>
-          <p>Склад запасных частей, подменное оборудование и сеть сервисных представителей по регионам.</p>
-        </article>
-      </div>
-    </section>
+          <aside class="side-stack">
+            <div class="mini-card">
+              <h3>Быстрые действия</h3>
+              <div class="ticket-actions">
+                <button class="action primary">Предварительная запись</button>
+                <button class="action secondary">Повторная печать талона</button>
+              </div>
+            </div>
+            <div class="mini-card">
+              <h3>Сценарий терминала</h3>
+              <p class="info-text">На реальном терминале здесь можно добавить пошаговую навигацию, язык интерфейса, крупные кнопки и экран подтверждения печати талона.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-    <section id="contacts" class="section">
-      <div class="section-head">
-        <h2>Контакты</h2>
-        <p>Свяжитесь с компанией для консультации, подбора оборудования или сервисного обслуживания.</p>
-      </div>
-      <div class="contact-grid">
-        <article class="contact-card">
-          <h3>Главный офис</h3>
-          <div class="contact-list">
-            <span>Республика Беларусь, 223043, д. Цнянка, ул. Дзержинского, 75</span>
-            <span>Пн-Пт: 9:00 - 18:00</span>
-            <span>УНП: 101 191 732</span>
+      <section id="client" class="tab-panel" role="tabpanel">
+        <div class="panel-head">
+          <div>
+            <h2>Меню клиента для оператора</h2>
+            <p>Рабочее место оператора с основной карточкой клиента и набором действий по управлению вызовом и обслуживанием.</p>
           </div>
-        </article>
-        <article class="contact-card">
-          <h3>Телефоны</h3>
-          <div class="contact-list">
-            <a href="tel:+375173000048">+375 (17) 300-00-48</a>
-            <a href="tel:+375445830906">+375 (44) 583-09-06</a>
-            <a class="link" href="https://farnell.by/" target="_blank" rel="noreferrer">Официальный сайт farnell.by</a>
+        </div>
+
+        <div class="ticket-panel">
+          <div class="client-focus">
+            <span class="muted">Текущий талон</span>
+            <div class="client-number">A102</div>
+            <h3>Открытие счёта и консультация по пакету услуг</h3>
+            <p class="info-text">Клиент ожидает 06:24, приоритет обычный, оператор: Окно 3.</p>
+
+            <div class="ticket-actions">
+              <button class="action primary">Вызвать</button>
+              <button class="action danger">Отклонить</button>
+              <button class="action secondary">Перенаправить</button>
+              <button class="action warning">Отложить</button>
+              <button class="action secondary">Вызвать по номеру</button>
+              <button class="action primary">Завершить</button>
+            </div>
           </div>
-        </article>
-      </div>
+
+          <div class="side-stack">
+            <div class="mini-card">
+              <h3>Информация по клиенту</h3>
+              <p class="info-text">Можно показывать комментарии, тип обращения, желаемую услугу, источник записи, время ожидания и историю движения по очереди.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Операции оператора</h3>
+              <div class="queue-list">
+                <div class="queue-row" style="grid-template-columns: 1fr;">
+                  <div><strong>Вызвать</strong><div class="muted">Переводит талон в активное обслуживание и выводит вызов на табло</div></div>
+                </div>
+                <div class="queue-row" style="grid-template-columns: 1fr;">
+                  <div><strong>Перенаправить</strong><div class="muted">Отправляет клиента в другую очередь, услугу или окно</div></div>
+                </div>
+                <div class="queue-row" style="grid-template-columns: 1fr;">
+                  <div><strong>Отложить</strong><div class="muted">Временно убирает талон из активной работы с последующим возвратом</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="admin" class="tab-panel" role="tabpanel">
+        <div class="panel-head">
+          <div>
+            <h2>Панель администратора</h2>
+            <p>Экран для управления каталогом услуг, параметрами очередей, окнами обслуживания и базовыми правилами маршрутизации.</p>
+          </div>
+        </div>
+
+        <div class="admin-layout">
+          <div class="board">
+            <div class="board-title">
+              <h3>Список услуг</h3>
+              <button class="admin-action primary">Добавить услугу</button>
+            </div>
+            <div class="admin-list">
+              <div class="admin-row">
+                <div>
+                  <strong>Карты и счета</strong>
+                  <div class="muted">Код: BANK-01 • Активна • Среднее время: 15 мин</div>
+                </div>
+                <button class="admin-action secondary">Изменить</button>
+              </div>
+              <div class="admin-row">
+                <div>
+                  <strong>Кассовое обслуживание</strong>
+                  <div class="muted">Код: CASH-02 • Активна • Среднее время: 8 мин</div>
+                </div>
+                <button class="admin-action secondary">Изменить</button>
+              </div>
+              <div class="admin-row">
+                <div>
+                  <strong>Кредиты и консультации</strong>
+                  <div class="muted">Код: CREDIT-07 • Активна • Требуется специалист</div>
+                </div>
+                <button class="admin-action secondary">Изменить</button>
+              </div>
+              <div class="admin-row">
+                <div>
+                  <strong>Юридические лица</strong>
+                  <div class="muted">Код: B2B-12 • Активна • Приоритет: средний</div>
+                </div>
+                <button class="admin-action secondary">Изменить</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="side-stack">
+            <div class="mini-card">
+              <h3>Параметры услуги</h3>
+              <div class="settings-list">
+                <div class="settings-row">
+                  <div>
+                    <strong>Среднее время обслуживания</strong>
+                    <div class="muted">Используется в расчёте загрузки и SLA</div>
+                  </div>
+                  <span>15 мин</span>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <strong>Доступные окна</strong>
+                    <div class="muted">Какие операторы могут обслуживать эту услугу</div>
+                  </div>
+                  <span>1, 3, 5</span>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <strong>Приоритет</strong>
+                    <div class="muted">Обычный, высокий, VIP, служебный</div>
+                  </div>
+                  <span>Обычный</span>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <strong>Предварительная запись</strong>
+                    <div class="muted">Разрешать запись заранее для этой услуги</div>
+                  </div>
+                  <span>Да</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <h3>Что ещё можно добавить</h3>
+              <p class="info-text">Роли пользователей, расписания работы окон, сценарии приоритизации, интеграцию с SMS, API табло и журнал событий.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
     </section>
   </main>
 
   <footer class="footer container">
-    <span>Лендинг подготовлен на основе открытой информации с официального сайта компании.</span>
+    <span>Прототип сделан как демонстрационный фронтенд-концепт для презентации или дальнейшей разработки.</span>
   </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-button');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.tab;
+
+        buttons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.remove('active');
+        });
+
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
