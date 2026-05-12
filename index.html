@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>План тренировок по плаванию</title>
-  <meta name="description" content="Простой и красивый план тренировок по плаванию для новичка." />
+  <title>ATMvidreg, прототип фронта</title>
+  <meta name="description" content="Прототип интерфейса реестра банкоматов по мотивам макета." />
   <style>
     :root {
-      --bg: #eef8ff;
-      --bg-deep: #dff1ff;
-      --surface: rgba(255, 255, 255, 0.86);
-      --surface-strong: #ffffff;
-      --text: #16324b;
-      --muted: #5f7892;
-      --accent: #2f8cff;
-      --accent-soft: #78d8ff;
-      --success: #1ca97a;
-      --border: rgba(47, 140, 255, 0.14);
-      --shadow: 0 18px 45px rgba(22, 50, 75, 0.1);
-      --radius: 24px;
-      --radius-sm: 18px;
-      --max: 1120px;
+      --bg: #f2f5f9;
+      --sidebar: #2e3338;
+      --sidebar-2: #3c434b;
+      --topbar: #2b2a2a;
+      --surface: #ffffff;
+      --surface-soft: #f7f9fc;
+      --border: #dde4ec;
+      --text: #243446;
+      --muted: #708095;
+      --accent: #2d98e2;
+      --accent-dark: #1b7ac0;
+      --shadow: 0 14px 35px rgba(23, 39, 58, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
     }
 
     * {
@@ -30,452 +30,566 @@
     body {
       margin: 0;
       font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-        radial-gradient(circle at top right, rgba(120, 216, 255, 0.42), transparent 24%),
-        radial-gradient(circle at top left, rgba(47, 140, 255, 0.1), transparent 24%),
-        linear-gradient(180deg, #f7fcff 0%, var(--bg) 48%, var(--bg-deep) 100%);
-      line-height: 1.55;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 72px 1fr;
     }
 
-    .container {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
+    .sidebar {
+      background: linear-gradient(180deg, var(--sidebar), var(--sidebar-2));
+      color: #eaf2fb;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 6px 0 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      z-index: 2;
+    }
+
+    .sidebar-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 1.2rem;
+    }
+
+    .sidebar-button.active {
+      background: rgba(45, 152, 226, 0.2);
+      color: #ffffff;
+    }
+
+    .main {
+      display: grid;
+      grid-template-rows: 64px 1fr;
+      min-width: 0;
     }
 
     .topbar {
-      padding: 22px 0 10px;
-    }
-
-    .topbar-inner {
+      background: var(--topbar);
+      color: #ffffff;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.62);
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      box-shadow: 0 12px 30px rgba(38, 91, 132, 0.06);
-      backdrop-filter: blur(14px);
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
     }
 
-    .brand {
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 800;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff, #fafcff);
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
+    .button {
+      min-height: 38px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 38px;
+      width: 260px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+
+    .search input {
+      border: 0;
+      outline: 0;
+      width: 100%;
+      font: inherit;
+      background: transparent;
+    }
+
+    .toolbar-icon {
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      color: white;
-      box-shadow: 0 12px 24px rgba(47, 140, 255, 0.22);
+      border-radius: 8px;
+      background: #eef6fd;
+      color: var(--accent-dark);
+      font-weight: 700;
     }
 
-    .topbar-note {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .table-wrap {
+      overflow: auto;
     }
 
-    .hero {
-      padding: 26px 0 20px;
+    table {
+      width: 100%;
+      min-width: 1300px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
     }
 
-    .hero-card {
-      display: grid;
-      grid-template-columns: 1.25fr 0.85fr;
-      gap: 24px;
-      padding: 34px;
-      border-radius: 30px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(240,250,255,0.9));
-      border: 1px solid rgba(255,255,255,0.8);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #fbfdff;
+      color: #516274;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px;
+      border-bottom: 1px solid #edf2f7;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8fbff;
+    }
+
+    tbody tr:hover {
+      background: #eef6ff;
+    }
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #bdd1e4;
+      border-radius: 4px;
+      display: inline-block;
+      background: #fff;
+      vertical-align: middle;
+    }
+
+    .checkbox.checked {
+      background: linear-gradient(135deg, var(--accent), #61b3ff);
+      border-color: var(--accent);
       position: relative;
     }
 
-    .hero-card::after {
-      content: "";
+    .checkbox.checked::after {
+      content: "✓";
       position: absolute;
-      right: -80px;
-      bottom: -80px;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(120,216,255,0.24), transparent 70%);
-      pointer-events: none;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
-    .eyebrow {
+    .tag {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
+      padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(47, 140, 255, 0.1);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 0.92rem;
-      margin-bottom: 16px;
-    }
-
-    h1, h2, h3 {
-      margin: 0;
-      line-height: 1.08;
-    }
-
-    h1 {
-      font-size: clamp(2.3rem, 5vw, 4.3rem);
-      letter-spacing: -0.04em;
-      max-width: 680px;
-    }
-
-    .lead {
-      margin: 18px 0 0;
-      max-width: 700px;
-      color: var(--muted);
-      font-size: 1.06rem;
-    }
-
-    .hero-points {
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-
-    .point {
-      padding: 18px;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.74);
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 24px rgba(48, 108, 153, 0.05);
-    }
-
-    .point strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 1rem;
-    }
-
-    .point p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .section {
-      padding: 18px 0 34px;
-    }
-
-    .section-head {
-      margin-bottom: 18px;
-    }
-
-    .section-head p {
-      margin: 10px 0 0;
-      color: var(--muted);
-      max-width: 760px;
-    }
-
-    .cards,
-    .tips-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      padding: 24px;
-      border-radius: var(--radius);
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.72);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    .card p,
-    .muted,
-    .day-list li,
-    .note-list li {
-      color: var(--muted);
-    }
-
-    .badge {
-      display: inline-flex;
-      margin-bottom: 14px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(28, 169, 122, 0.1);
-      color: var(--success);
-      font-size: 0.82rem;
+      background: #edf6ff;
+      color: var(--accent-dark);
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
-    .day-list,
-    .note-list {
-      margin: 14px 0 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .progress {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .progress-item {
-      padding: 18px;
-      border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.66);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .progress-item strong {
-      display: block;
-      font-size: 1.5rem;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    .focus-block {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-    }
-
-    .big-quote {
-      padding: 28px;
-      border-radius: var(--radius);
-      background: linear-gradient(145deg, rgba(47,140,255,0.12), rgba(120,216,255,0.1));
-      border: 1px solid rgba(47,140,255,0.12);
-      box-shadow: var(--shadow);
-    }
-
-    .big-quote p {
-      margin: 0;
-      font-size: 1.18rem;
-      line-height: 1.7;
-      color: #24435f;
-    }
-
-    .footer {
-      padding: 8px 0 42px;
+    .footer-note {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-soft);
       color: var(--muted);
-      font-size: 0.94rem;
+      font-size: 0.9rem;
     }
 
-    @media (max-width: 960px) {
-      .hero-card,
-      .focus-block,
-      .cards,
-      .tips-grid,
-      .progress {
+    @media (max-width: 900px) {
+      .app {
         grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        flex-direction: row;
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .main {
+        grid-template-rows: 56px 1fr;
+      }
+
+      .topbar h1 {
+        font-size: 1.4rem;
       }
     }
 
     @media (max-width: 640px) {
-      .container {
-        width: min(calc(100% - 20px), var(--max));
+      .content {
+        padding: 10px;
       }
 
-      .topbar-inner {
-        flex-direction: column;
-        align-items: flex-start;
+      .toolbar {
+        flex-wrap: wrap;
       }
 
-      .hero-card,
-      .card,
-      .big-quote {
-        padding: 22px;
-      }
-
-      h1 {
-        font-size: 2.2rem;
+      .search {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <header class="topbar container">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark">🏊</div>
-        <span>Плавание, спокойный старт</span>
-      </div>
-      <div class="topbar-note">Мягкий план для новичка, который только учится держаться на воде</div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-button">☰</div>
+      <div class="sidebar-button active">🏧</div>
+      <div class="sidebar-button">📍</div>
+      <div class="sidebar-button">🛠</div>
+      <div class="sidebar-button">📊</div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h1>ATMvidreg</h1>
+      </header>
+
+      <main class="content">
+        <section class="panel">
+          <div class="toolbar">
+            <button class="button">Добавить</button>
+            <label class="search">
+              <span>Поиск</span>
+              <input type="text" value="" placeholder="Поиск" />
+            </label>
+            <div class="toolbar-icon">⚙</div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th><span class="checkbox"></span></th>
+                  <th>ATM ID</th>
+                  <th>Банк</th>
+                  <th>Вендор</th>
+                  <th>Модель</th>
+                  <th>SN</th>
+                  <th>Заводской</th>
+                  <th>ПО</th>
+                  <th>Город</th>
+                  <th>Адрес установки</th>
+                  <th>Место размещения</th>
+                  <th>Область</th>
+                  <th>Примечание</th>
+                  <th>Тип</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013223</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>15228RF564518</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Минск</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox checked"></span></td>
+                  <td>22013224</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 522</td>
+                  <td>1520RF123456</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Гродно</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013225</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1521RF789012</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Брест</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013226</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1523RF345678</td>
+                  <td>Cell</td>
+                  <td>Tellme</td>
+                  <td>Минск</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013227</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1524RF901234</td>
+                  <td>Cell</td>
+                  <td>Tellme</td>
+                  <td>Минск</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013228</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1525RF567890</td>
+                  <td>Cell</td>
+                  <td>Tellme</td>
+                  <td>Гродно</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013229</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1526RF234567</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Брест</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013230</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1527RF890123</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Минск</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013231</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1528RF456789</td>
+                  <td>Cell</td>
+                  <td>Aptra</td>
+                  <td>Брест</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013232</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1529RF012345</td>
+                  <td>Cell</td>
+                  <td>Aptra</td>
+                  <td>Бобруйск</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013233</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 522</td>
+                  <td>1530RF678901</td>
+                  <td>?????????????</td>
+                  <td>Aptra</td>
+                  <td>Минск</td>
+                  <td>ул. Уборевича</td>
+                  <td>с обратной стороны</td>
+                  <td>Минская</td>
+                  <td>cashin</td>
+                  <td><span class="tag">cashin</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013234</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1531RF234890</td>
+                  <td>?????????????</td>
+                  <td>Agilis</td>
+                  <td>Минск</td>
+                  <td>ул. Ленина, д.23</td>
+                  <td>л. вход, под лестн.</td>
+                  <td>Минская</td>
+                  <td>cashout</td>
+                  <td><span class="tag">cashout</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013235</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1532RF789123</td>
+                  <td>?????????????</td>
+                  <td>Tellme</td>
+                  <td>Гомель</td>
+                  <td>ул. Советская</td>
+                  <td>в торце здания</td>
+                  <td>Гомельская</td>
+                  <td>cashout</td>
+                  <td><span class="tag">cashout</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013236</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 522</td>
+                  <td>1533RF456012</td>
+                  <td>?????????????</td>
+                  <td>Agilis</td>
+                  <td>Минск</td>
+                  <td>пр-т Независимости</td>
+                  <td>1 этаж ТЦ Дана</td>
+                  <td>Минская</td>
+                  <td>cashout</td>
+                  <td><span class="tag">cashout</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013237</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1534RF905067</td>
+                  <td>?????????????</td>
+                  <td>Aptra</td>
+                  <td>Могилев</td>
+                  <td>ул. Первомайская</td>
+                  <td>2 этаж лестница</td>
+                  <td>Могилевская</td>
+                  <td>cashout</td>
+                  <td><span class="tag">cashout</span></td>
+                </tr>
+                <tr>
+                  <td><span class="checkbox"></span></td>
+                  <td>22013238</td>
+                  <td>ALFA</td>
+                  <td>Diebold</td>
+                  <td>Opteva 520</td>
+                  <td>1525RF123789</td>
+                  <td>Cell</td>
+                  <td>Agilis</td>
+                  <td>Могилев</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td>Cell</td>
+                  <td><span class="tag">Cell</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="footer-note">
+            Прототип фронта по мотивам макета: боковое меню, верхняя панель, поиск, кнопка добавления и большая таблица реестра банкоматов.
+          </div>
+        </section>
+      </main>
     </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <div class="hero-card">
-        <div>
-          <div class="eyebrow">Начало без давления</div>
-          <h1>План тренировок по плаванию для уверенного старта</h1>
-          <p class="lead">
-            Цель сейчас не скорость и не техника на максимум, а спокойствие в воде,
-            контроль дыхания и уверенность. Этот план сделан так, чтобы шаг за шагом
-            привыкнуть к воде и постепенно научиться держать голову и тело стабильнее.
-          </p>
-        </div>
-
-        <aside class="hero-points">
-          <div class="point">
-            <strong>Главный фокус</strong>
-            <p>Расслабление, дыхание, устойчивость в воде и базовое чувство опоры.</p>
-          </div>
-          <div class="point">
-            <strong>Режим</strong>
-            <p>2-3 короткие тренировки в неделю, без перегруза и с паузами на восстановление.</p>
-          </div>
-          <div class="point">
-            <strong>Правило</strong>
-            <p>Лучше спокойно и регулярно, чем героически один раз и потом неделю не хотеть возвращаться.</p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>План на неделю</h2>
-        <p>Три простые тренировки, каждая со своей задачей. Если тяжело, можно начать с двух.</p>
-      </div>
-
-      <div class="cards">
-        <article class="card">
-          <div class="badge">Тренировка 1</div>
-          <h3>Привыкание к воде</h3>
-          <ul class="day-list">
-            <li>Постоять в воде спокойно и расслабить плечи</li>
-            <li>Сделать несколько спокойных выдохов в воду</li>
-            <li>Подержаться за бортик и вытянуть тело</li>
-            <li>Попробовать мягко поднять ноги и почувствовать плавучесть</li>
-            <li>5-10 минут спокойного повторения без спешки</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <div class="badge">Тренировка 2</div>
-          <h3>Дыхание и баланс</h3>
-          <ul class="day-list">
-            <li>Вдох над водой, длинный выдох в воду</li>
-            <li>Скольжение от бортика с вытянутыми руками</li>
-            <li>Удержание лица в воде на короткие интервалы</li>
-            <li>Попытка держать тело ровнее без лишнего напряжения</li>
-            <li>Короткие паузы, чтобы не уставать психологически</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <div class="badge">Тренировка 3</div>
-          <h3>Первые связки движений</h3>
-          <ul class="day-list">
-            <li>Повтор дыхания и скольжения</li>
-            <li>Лёгкая работа ногами у бортика или с доской</li>
-            <li>2-3 коротких прохода с максимально спокойным темпом</li>
-            <li>Следить, чтобы голова и шея не зажимались</li>
-            <li>Закончить тренировку на хорошем ощущении, а не на изнеможении</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>На что смотреть по прогрессу</h2>
-        <p>Не нужно требовать от себя слишком много. Достаточно замечать маленькие, но честные улучшения.</p>
-      </div>
-
-      <div class="progress">
-        <div class="progress-item">
-          <strong>1</strong>
-          <span class="muted">Стало меньше страха перед водой</span>
-        </div>
-        <div class="progress-item">
-          <strong>2</strong>
-          <span class="muted">Выдох в воду получается спокойнее</span>
-        </div>
-        <div class="progress-item">
-          <strong>3</strong>
-          <span class="muted">Тело легче вытягивается в линию</span>
-        </div>
-        <div class="progress-item">
-          <strong>4</strong>
-          <span class="muted">Появляется ощущение контроля</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Важные напоминания</h2>
-        <p>Вот что поможет не сломать темп и не испугаться первых сложностей.</p>
-      </div>
-
-      <div class="focus-block">
-        <article class="card">
-          <h3>Что делать на каждой тренировке</h3>
-          <ul class="note-list">
-            <li>Начинать очень спокойно, без рывков</li>
-            <li>Не бороться с водой, а учиться ей доверять</li>
-            <li>Если появляется напряжение, остановиться и восстановить дыхание</li>
-            <li>Думать не о результате, а о качестве ощущения в воде</li>
-            <li>Фиксировать даже маленький прогресс</li>
-          </ul>
-        </article>
-
-        <div class="big-quote">
-          <p>
-            В плавании для новичка прогресс часто выглядит не как “я поплыл идеально”,
-            а как “я стал спокойнее, перестал паниковать и лучше чувствую воду”.
-            Это уже очень хороший результат.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Ещё пара советов</h2>
-        <p>Небольшие вещи, которые реально помогают на старте.</p>
-      </div>
-
-      <div class="tips-grid">
-        <article class="card">
-          <h3>Не спешить с глубиной</h3>
-          <p>Пока важнее чувствовать себя спокойно в безопасной зоне, чем насильно идти дальше.</p>
-        </article>
-        <article class="card">
-          <h3>Делать короткие подходы</h3>
-          <p>Лучше несколько коротких и качественных попыток, чем одна длинная и нервная.</p>
-        </article>
-        <article class="card">
-          <h3>Хвалить себя за реальный прогресс</h3>
-          <p>Если сегодня стало чуть легче дышать и держаться на воде, это уже победа.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer container">
-    <span>План можно потом расширить: добавить календарь, чекбоксы выполнения, цели на месяц и заметки после тренировки.</span>
-  </footer>
+  </div>
 </body>
 </html>
