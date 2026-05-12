@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParcelHub Admin, карточка почтомата</title>
+  <meta name="description" content="Детальная страница почтомата с кликабельной схемой ячеек." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>ParcelHub Admin</strong>
+        <span>Управление почтоматами, отправлениями и пользователями</span>
+      </div>
+
+      <nav class="menu">
+        <a href="users.html">Пользователи</a>
+        <a href="#">Отправления</a>
+        <a href="#">Чеки</a>
+        <a href="#">Сообщения</a>
+        <a href="#">Размеры ячеек</a>
+        <a href="index.html" class="active">Почтоматы</a>
+        <a href="#">Регионы</a>
+        <a href="#">Группы</a>
+        <a href="#">Договоры</a>
+        <a href="#">Настройки</a>
+        <a href="#">Профиль</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <strong>Карточка почтомата G8101</strong>
+        <div class="user">
+          <span class="dot"></span>
+          <span>Вход, ANDREI</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h1>Параметры устройства</h1>
+              <p class="page-lead">Кликабельный прототип карточки почтомата. Некоторые неактивные поля подсвечены серым.</p>
+            </div>
+            <div class="toolbar">
+              <a class="small-button" href="index.html">← К списку</a>
+              <button class="button">Сохранить</button>
+              <button class="small-button">История</button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Устройство</label>
+              <input class="input" value="G8101" />
+            </div>
+            <div class="field">
+              <label>LUN</label>
+              <input class="input" value="99999901" />
+            </div>
+            <div class="field">
+              <label>Terminal ID</label>
+              <input class="input" value="0" />
+            </div>
+
+            <div class="field">
+              <label>Индекс</label>
+              <input class="input" value="224709" />
+            </div>
+            <div class="field">
+              <label>Индекс ОПС</label>
+              <input class="input" value="224701" />
+            </div>
+            <div class="field">
+              <label>Номерное обозначение ОПС</label>
+              <input class="input is-disabled" value="096-51-01" disabled />
+            </div>
+
+            <div class="field">
+              <label>ID из системы перенаправления</label>
+              <input class="input" value="101" />
+            </div>
+            <div class="field">
+              <label>Регион</label>
+              <select class="select"><option>Brest</option></select>
+            </div>
+            <div class="field">
+              <label>СОАТО</label>
+              <input class="input is-disabled" value="1401000000" disabled />
+            </div>
+
+            <div class="field field--wide">
+              <label>Адрес</label>
+              <input class="input" value="г. Брест, Варшавское шоссе, 43" />
+            </div>
+
+            <div class="field">
+              <label>Филиал</label>
+              <input class="input" value="Брест 3" />
+            </div>
+            <div class="field">
+              <label>Тип устройства</label>
+              <select class="select"><option>BELPOST_M</option></select>
+            </div>
+            <div class="field">
+              <label>Команда</label>
+              <select class="select is-disabled" disabled><option>-------------</option></select>
+            </div>
+
+            <div class="field">
+              <label>Широта</label>
+              <input class="input" value="0.0" />
+            </div>
+            <div class="field">
+              <label>Долгота</label>
+              <input class="input" value="0.0" />
+            </div>
+            <div class="field">
+              <label>Статус устройства</label>
+              <input class="input is-disabled" value="Активно" disabled />
+            </div>
+          </div>
+        </section>
+
+        <section class="card locker-card">
+          <div class="locker-meta">
+            <div>
+              <h2 class="locker-title">Внешний вид устройства</h2>
+              <p class="muted">Нажми на любую ячейку, чтобы обновить блок деталей ниже.</p>
+            </div>
+            <button class="small-button">Обновить схему</button>
+          </div>
+
+          <div class="locker-side">
+            <div class="locker-grid">
+              <div class="cell green" data-locker="L-01" data-lock-status="Исправен" data-size="L" data-contract="PK-2401" data-cell-status="Свободна" data-shipment="-">L</div>
+              <div class="cell red" data-locker="L-02" data-lock-status="Ошибка" data-size="L" data-contract="PK-2402" data-cell-status="Не инициализирована" data-shipment="BY45890001">L</div>
+              <div class="cell red" data-locker="L-03" data-lock-status="Ошибка" data-size="L" data-contract="PK-2403" data-cell-status="Ошибка" data-shipment="BY45890002">L</div>
+              <div class="cell green" data-locker="S-04" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-05" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell orange" data-locker="S-06" data-lock-status="Исправен" data-size="S" data-contract="PK-2480" data-cell-status="Занята" data-shipment="BY45891230">S</div>
+              <div class="cell orange" data-locker="S-07" data-lock-status="Исправен" data-size="S" data-contract="PK-2481" data-cell-status="Забронирована" data-shipment="BY45891231">S</div>
+              <div class="cell green" data-locker="S-08" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell red" data-locker="S-09" data-lock-status="Ошибка" data-size="S" data-contract="PK-2482" data-cell-status="Ошибка" data-shipment="BY45891232">S</div>
+              <div class="cell orange" data-locker="S-10" data-lock-status="Исправен" data-size="S" data-contract="PK-2483" data-cell-status="Занята" data-shipment="BY45891233">S</div>
+              <div class="cell green" data-locker="S-11" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell red" data-locker="S-12" data-lock-status="Ошибка" data-size="S" data-contract="PK-2484" data-cell-status="Не инициализирована" data-shipment="BY45891234">S</div>
+              <div class="cell orange" data-locker="S-13" data-lock-status="Исправен" data-size="S" data-contract="PK-2485" data-cell-status="Занята" data-shipment="BY45891235">S</div>
+              <div class="cell green" data-locker="S-14" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="M-15" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-16" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell red" data-locker="M-17" data-lock-status="Ошибка" data-size="M" data-contract="PK-2486" data-cell-status="Ошибка" data-shipment="BY45891236">M</div>
+              <div class="cell orange" data-locker="M-18" data-lock-status="Исправен" data-size="M" data-contract="PK-2481" data-cell-status="Занята" data-shipment="BY45891237">M</div>
+              <div class="cell green" data-locker="M-19" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-20" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell red" data-locker="M-21" data-lock-status="Ошибка" data-size="M" data-contract="PK-2487" data-cell-status="Ошибка" data-shipment="BY45891238">M</div>
+            </div>
+
+            <div class="terminal-preview">Почтомат</div>
+
+            <div class="locker-grid">
+              <div class="cell green" data-locker="L-22" data-lock-status="Исправен" data-size="L" data-contract="-" data-cell-status="Свободна" data-shipment="-">L</div>
+              <div class="cell green" data-locker="L-23" data-lock-status="Исправен" data-size="L" data-contract="-" data-cell-status="Свободна" data-shipment="-">L</div>
+              <div class="cell green" data-locker="L-24" data-lock-status="Исправен" data-size="L" data-contract="-" data-cell-status="Свободна" data-shipment="-">L</div>
+              <div class="cell green" data-locker="S-25" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-26" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-27" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-28" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell red" data-locker="S-29" data-lock-status="Ошибка" data-size="S" data-contract="PK-2488" data-cell-status="Ошибка" data-shipment="BY45891239">S</div>
+              <div class="cell green" data-locker="S-30" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell orange" data-locker="S-31" data-lock-status="Исправен" data-size="S" data-contract="PK-2489" data-cell-status="Забронирована" data-shipment="BY45891240">S</div>
+              <div class="cell green" data-locker="S-32" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-33" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-34" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="S-35" data-lock-status="Исправен" data-size="S" data-contract="-" data-cell-status="Свободна" data-shipment="-">S</div>
+              <div class="cell green" data-locker="M-36" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-37" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-38" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-39" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell green" data-locker="M-40" data-lock-status="Исправен" data-size="M" data-contract="-" data-cell-status="Свободна" data-shipment="-">M</div>
+              <div class="cell orange" data-locker="M-41" data-lock-status="Исправен" data-size="M" data-contract="PK-2490" data-cell-status="Занята" data-shipment="BY45891241">M</div>
+              <div class="cell blue is-selected" data-locker="M-42" data-lock-status="Открыт" data-size="M" data-contract="PK-2491" data-cell-status="Открыта" data-shipment="BY45891242">M</div>
+            </div>
+          </div>
+
+          <div class="legend">
+            <div class="legend-item legend-gray">Не настроена</div>
+            <div class="legend-item legend-red">Не инициализирована / Ошибка</div>
+            <div class="legend-item legend-green">Свободна</div>
+            <div class="legend-item legend-orange">Забронирована / Занята</div>
+            <div class="legend-item legend-blue">Открыта</div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="field">
+              <label>Номер замка</label>
+              <input class="input" data-field="locker" value="M-42" />
+            </div>
+            <div class="field">
+              <label>Статус замка</label>
+              <input class="input" data-field="lockStatus" value="Открыт" />
+            </div>
+            <div class="field">
+              <label>Размер ячейки</label>
+              <input class="input" data-field="size" value="M" />
+            </div>
+            <div class="field">
+              <label>Договор</label>
+              <input class="input" data-field="contract" value="PK-2491" />
+            </div>
+            <div class="field">
+              <label>Статус ячейки</label>
+              <input class="input" data-field="cellStatus" value="Открыта" />
+            </div>
+            <div class="field">
+              <label>№ отправления</label>
+              <input class="input" data-field="shipment" value="BY45891242" />
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button class="small-button danger-button">Деактивировать ячейку</button>
+            <button class="small-button success-button">Активировать ячейку</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

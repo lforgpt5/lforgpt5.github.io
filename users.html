@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParcelHub Admin, пользователи</title>
+  <meta name="description" content="Прототип страницы пользователей для системы управления почтоматами." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>ParcelHub Admin</strong>
+        <span>Управление почтоматами, отправлениями и пользователями</span>
+      </div>
+
+      <nav class="menu">
+        <a href="users.html" class="active">Пользователи</a>
+        <a href="#">Отправления</a>
+        <a href="#">Чеки</a>
+        <a href="#">Сообщения</a>
+        <a href="#">Размеры ячеек</a>
+        <a href="index.html">Почтоматы</a>
+        <a href="#">Регионы</a>
+        <a href="#">Группы</a>
+        <a href="#">Договоры</a>
+        <a href="#">Настройки</a>
+        <a href="#">Профиль</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <strong>Пользователи системы</strong>
+        <div class="user">
+          <span class="dot"></span>
+          <span>Вход, ANDREI</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h1>Список пользователей</h1>
+              <p class="page-lead">Операторы, техники, курьеры и администраторы с ролями и текущей активностью.</p>
+            </div>
+            <div class="toolbar">
+              <button class="ghost-button">Открыть фильтр</button>
+              <select class="select">
+                <option>Все роли</option>
+                <option>Терминалы</option>
+                <option>Курьер</option>
+                <option>Диспетчер</option>
+                <option>Администратор</option>
+              </select>
+              <input class="search" placeholder="Поиск по логину или имени" />
+              <button class="button">+ Добавить</button>
+              <button class="small-button">Обновить</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Логин</th>
+                  <th>Роль</th>
+                  <th>Группа</th>
+                  <th>Имя</th>
+                  <th>Фамилия</th>
+                  <th>Отчество</th>
+                  <th>Телефон</th>
+                  <th>Активный</th>
+                  <th>Активность</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>_chernenokel</td>
+                  <td>Терминалы</td>
+                  <td>BELPOST</td>
+                  <td>Елена</td>
+                  <td>Черненок</td>
+                  <td>Леонидовна</td>
+                  <td></td>
+                  <td><span class="status-chip active">Да</span></td>
+                  <td>14/06/2021 08:52:11</td>
+                </tr>
+                <tr>
+                  <td>_ischuknl</td>
+                  <td>Терминалы</td>
+                  <td>BELPOST</td>
+                  <td>Николай</td>
+                  <td>Ищук</td>
+                  <td></td>
+                  <td></td>
+                  <td><span class="status-chip pause">Нет</span></td>
+                  <td>28/06/2021 15:29:21</td>
+                </tr>
+                <tr>
+                  <td>029600</td>
+                  <td>Диспетчер</td>
+                  <td>BELPOST</td>
+                  <td>Ю</td>
+                  <td>Иващенко</td>
+                  <td>Ю</td>
+                  <td>+375232334433</td>
+                  <td><span class="status-chip active">Да</span></td>
+                  <td>14/01/2025 10:38:43</td>
+                </tr>
+                <tr>
+                  <td>180401</td>
+                  <td>Техник</td>
+                  <td>BELPOST</td>
+                  <td>Техник</td>
+                  <td>Т</td>
+                  <td></td>
+                  <td></td>
+                  <td><span class="status-chip pause">Нет</span></td>
+                  <td>22/05/2024 14:00:22</td>
+                </tr>
+                <tr>
+                  <td>adminBrest</td>
+                  <td>Администратор филиала</td>
+                  <td>BELPOST</td>
+                  <td>Светлана</td>
+                  <td>Рулева</td>
+                  <td>Александровна</td>
+                  <td></td>
+                  <td><span class="status-chip active">Да</span></td>
+                  <td>12/05/2026 07:31:17</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

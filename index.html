@@ -3,498 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ParcelHub Admin, прототип системы управления почтоматом</title>
-  <meta name="description" content="Прототип админ-панели для системы управления почтоматом с таблицей, фильтрами и карточкой устройства." />
-  <style>
-    :root {
-      --bg: #eef3f8;
-      --sidebar: #223244;
-      --sidebar-2: #2f455d;
-      --topbar: #3d556d;
-      --surface: #ffffff;
-      --surface-soft: #f7fafc;
-      --border: #dbe4ee;
-      --text: #203042;
-      --muted: #6b7c90;
-      --accent: #1fb4a2;
-      --accent-dark: #0e8f7f;
-      --blue: #2f6feb;
-      --green: #36b36a;
-      --orange: #f4a62a;
-      --red: #ef5350;
-      --gray: #bcc7d2;
-      --shadow: 0 18px 45px rgba(19, 35, 53, 0.08);
-      --radius: 18px;
-      --radius-sm: 12px;
-      --max: 1480px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 250px 1fr;
-    }
-
-    .sidebar {
-      background: linear-gradient(180deg, var(--sidebar), var(--sidebar-2));
-      color: #f0f6fb;
-      padding: 20px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .brand {
-      padding: 10px 8px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .brand strong {
-      display: block;
-      font-size: 1.15rem;
-      letter-spacing: 0.02em;
-    }
-
-    .brand span {
-      display: block;
-      margin-top: 6px;
-      color: rgba(240, 246, 251, 0.72);
-      font-size: 0.92rem;
-    }
-
-    .menu {
-      display: grid;
-      gap: 8px;
-    }
-
-    .menu a {
-      padding: 11px 12px;
-      border-radius: 12px;
-      color: rgba(240, 246, 251, 0.82);
-      transition: 0.2s ease;
-      font-size: 0.96rem;
-    }
-
-    .menu a.active,
-    .menu a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    .main {
-      min-width: 0;
-      display: grid;
-      grid-template-rows: 62px 1fr;
-    }
-
-    .topbar {
-      background: linear-gradient(180deg, #587089, var(--topbar));
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      box-shadow: 0 10px 22px rgba(17, 33, 48, 0.12);
-    }
-
-    .topbar strong {
-      font-size: 1rem;
-      letter-spacing: 0.01em;
-    }
-
-    .topbar .user {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.92rem;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #8ff0c8;
-      box-shadow: 0 0 0 6px rgba(143, 240, 200, 0.14);
-    }
-
-    .content {
-      padding: 20px;
-      display: grid;
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .card-head {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 16px;
-    }
-
-    .card-head h2,
-    .card-head h3,
-    .section-title,
-    .locker-title {
-      margin: 0;
-    }
-
-    .card-head p {
-      margin: 6px 0 0;
-      color: var(--muted);
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .button,
-    .ghost-button,
-    .small-button {
-      border: 0;
-      border-radius: 10px;
-      min-height: 38px;
-      padding: 0 14px;
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .button {
-      background: var(--accent);
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .ghost-button {
-      background: #edf7f5;
-      color: var(--accent-dark);
-      font-weight: 600;
-    }
-
-    .small-button {
-      background: #f3f7fb;
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-
-    .select,
-    .search,
-    .input {
-      min-height: 38px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      padding: 0 12px;
-      font: inherit;
-    }
-
-    .search {
-      min-width: 240px;
-    }
-
-    .table-wrap {
-      overflow: auto;
-      padding: 0 0 8px;
-    }
-
-    table {
-      width: 100%;
-      min-width: 1180px;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    thead th {
-      background: #f6fafc;
-      color: #56677b;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-align: left;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-
-    tbody td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #edf2f7;
-      white-space: nowrap;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #fbfdff;
-    }
-
-    tbody tr:hover {
-      background: #f0fbf8;
-    }
-
-    .status-chip {
-      display: inline-flex;
-      align-items: center;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .status-chip.active {
-      background: rgba(54, 179, 106, 0.12);
-      color: #218a4c;
-    }
-
-    .status-chip.pause {
-      background: rgba(244, 166, 42, 0.14);
-      color: #b97708;
-    }
-
-    .layout-2 {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 20px;
-    }
-
-    .form-grid {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .field {
-      display: grid;
-      gap: 8px;
-    }
-
-    .field label {
-      font-size: 0.9rem;
-      color: #4e6074;
-      font-weight: 600;
-    }
-
-    .field--wide {
-      grid-column: span 3;
-    }
-
-    .legend {
-      padding: 0 20px 20px;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .legend-item {
-      min-height: 54px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-    }
-
-    .legend-gray { background: #bfc6cf; color: #273240; }
-    .legend-red { background: var(--red); }
-    .legend-green { background: var(--green); }
-    .legend-orange { background: var(--orange); }
-    .legend-blue { background: #4964d2; }
-
-    .locker-card {
-      padding: 20px;
-    }
-
-    .locker-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .locker-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .cell {
-      min-height: 64px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      color: #fff;
-      box-shadow: inset 0 -2px 0 rgba(255,255,255,0.08);
-    }
-
-    .cell.green { background: var(--green); }
-    .cell.red { background: var(--red); }
-    .cell.orange { background: var(--orange); }
-    .cell.gray { background: #c6ccd4; color: #2d3640; }
-    .cell.blue { background: #4964d2; }
-
-    .locker-side {
-      display: grid;
-      grid-template-columns: 1fr 120px 1fr;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .terminal-preview {
-      min-height: 220px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, #cdd4db, #aeb7c1);
-      border: 1px solid #a9b4bf;
-      display: grid;
-      place-items: center;
-      position: relative;
-      color: #38485a;
-      font-weight: 700;
-    }
-
-    .terminal-preview::before {
-      content: "Экран";
-      position: absolute;
-      top: 26px;
-      width: 82px;
-      height: 62px;
-      border-radius: 10px;
-      background: #f5fbff;
-      display: grid;
-      place-items: center;
-      border: 1px solid #9aa7b3;
-    }
-
-    .terminal-preview::after {
-      content: "🧾";
-      position: absolute;
-      bottom: 26px;
-      font-size: 1.8rem;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      padding: 0 20px 20px;
-    }
-
-    .detail-actions {
-      padding: 0 20px 20px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .danger-button {
-      background: rgba(239, 83, 80, 0.14);
-      color: #cf3e3b;
-      border: 1px solid rgba(239, 83, 80, 0.18);
-    }
-
-    .success-button {
-      background: rgba(54, 179, 106, 0.14);
-      color: #218a4c;
-      border: 1px solid rgba(54, 179, 106, 0.18);
-    }
-
-    @media (max-width: 1200px) {
-      .layout-2,
-      .form-grid,
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field--wide {
-        grid-column: auto;
-      }
-
-      .legend {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .locker-side {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 900px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        padding: 14px;
-      }
-
-      .menu {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .content {
-        padding: 10px;
-      }
-
-      .topbar {
-        padding: 0 14px;
-      }
-
-      .card-head,
-      .form-grid,
-      .locker-card,
-      .legend,
-      .detail-grid,
-      .detail-actions {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .legend {
-        grid-template-columns: 1fr;
-      }
-
-      .locker-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .menu {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <title>ParcelHub Admin, почтоматы</title>
+  <meta name="description" content="Список почтоматов и навигация по страницам прототипа системы управления." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app">
@@ -505,12 +16,12 @@
       </div>
 
       <nav class="menu">
-        <a href="#">Пользователи</a>
+        <a href="users.html">Пользователи</a>
         <a href="#">Отправления</a>
         <a href="#">Чеки</a>
         <a href="#">Сообщения</a>
         <a href="#">Размеры ячеек</a>
-        <a href="#" class="active">Почтоматы</a>
+        <a href="index.html" class="active">Почтоматы</a>
         <a href="#">Регионы</a>
         <a href="#">Группы</a>
         <a href="#">Договоры</a>
@@ -521,7 +32,7 @@
 
     <div class="main">
       <header class="topbar">
-        <strong>Система управления почтоматами</strong>
+        <strong>Список почтоматов</strong>
         <div class="user">
           <span class="dot"></span>
           <span>Вход, ANDREI</span>
@@ -529,22 +40,46 @@
       </header>
 
       <main class="content">
+        <section class="stats-grid">
+          <article class="card stat-card">
+            <strong>148</strong>
+            <span class="muted">активных устройств</span>
+          </article>
+          <article class="card stat-card">
+            <strong>12</strong>
+            <span class="muted">с ошибками</span>
+          </article>
+          <article class="card stat-card">
+            <strong>24</strong>
+            <span class="muted">требуют обслуживания</span>
+          </article>
+          <article class="card stat-card">
+            <strong>7 842</strong>
+            <span class="muted">свободных ячеек</span>
+          </article>
+        </section>
+
         <section class="card">
           <div class="card-head">
             <div>
-              <h2>Список пользователей / операторов</h2>
-              <p>Рабочий список с фильтрами, пагинацией и статусами активности.</p>
+              <h1>Почтоматы</h1>
+              <p class="page-lead">Кликабельный список устройств. Нажми на строку, чтобы открыть карточку конкретного почтомата.</p>
             </div>
             <div class="toolbar">
-              <button class="ghost-button">Открыть фильтр</button>
+              <input class="search" placeholder="Поиск по адресу или ID" />
               <select class="select">
-                <option>Выбрать фильтр</option>
-                <option>Активные</option>
-                <option>Курьеры</option>
-                <option>Администраторы</option>
+                <option>Все регионы</option>
+                <option>Минск</option>
+                <option>Brest</option>
+                <option>Grodno</option>
               </select>
-              <button class="button">+ Добавить</button>
-              <button class="small-button">Обновить</button>
+              <select class="select">
+                <option>Все статусы</option>
+                <option>Активен</option>
+                <option>Ошибка</option>
+                <option>Обслуживание</option>
+              </select>
+              <button class="button">+ Добавить почтомат</button>
             </div>
           </div>
 
@@ -552,279 +87,105 @@
             <table>
               <thead>
                 <tr>
-                  <th>Логин</th>
-                  <th>Роль</th>
-                  <th>Группа</th>
-                  <th>Имя</th>
-                  <th>Фамилия</th>
-                  <th>Отчество</th>
-                  <th>Телефон</th>
-                  <th>Активный</th>
-                  <th>Активность</th>
+                  <th>Устройство</th>
+                  <th>LUN</th>
+                  <th>Регион</th>
+                  <th>Филиал</th>
+                  <th>Адрес</th>
+                  <th>Тип</th>
+                  <th>Статус</th>
+                  <th>Свободно</th>
+                  <th>Занято</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>_chernenokel</td>
-                  <td>Терминалы</td>
-                  <td>BELPOST</td>
-                  <td>Елена</td>
-                  <td>Черненок</td>
-                  <td>Леонидовна</td>
-                  <td></td>
-                  <td><span class="status-chip active">Да</span></td>
-                  <td>14/06/2021 08:52:11</td>
+                <tr class="clickable-row" data-href="locker.html">
+                  <td class="link-cell">G8101</td>
+                  <td>99999901</td>
+                  <td>Brest</td>
+                  <td>Брест 3</td>
+                  <td>г. Брест, Варшавское шоссе, 43</td>
+                  <td>BELPOST_M</td>
+                  <td><span class="status-chip active">Активен</span></td>
+                  <td>54</td>
+                  <td>18</td>
                 </tr>
-                <tr>
-                  <td>_ischuknl</td>
-                  <td>Терминалы</td>
-                  <td>BELPOST</td>
-                  <td>Николай</td>
-                  <td>Ищук</td>
-                  <td></td>
-                  <td></td>
-                  <td><span class="status-chip pause">Нет</span></td>
-                  <td>28/06/2021 15:29:21</td>
+                <tr class="clickable-row" data-href="locker.html">
+                  <td class="link-cell">G8102</td>
+                  <td>99999902</td>
+                  <td>Минск</td>
+                  <td>Минск 7</td>
+                  <td>пр-т Независимости, 54</td>
+                  <td>BELPOST_M</td>
+                  <td><span class="status-chip pause">Обслуживание</span></td>
+                  <td>38</td>
+                  <td>31</td>
                 </tr>
-                <tr>
-                  <td>_padmin</td>
-                  <td>Админ терминалов</td>
-                  <td>BELPOST</td>
-                  <td>Admin</td>
-                  <td>Root</td>
-                  <td></td>
-                  <td></td>
-                  <td><span class="status-chip active">Да</span></td>
-                  <td>29/06/2021 09:00:51</td>
+                <tr class="clickable-row" data-href="locker.html">
+                  <td class="link-cell">G8115</td>
+                  <td>99999915</td>
+                  <td>Гомель</td>
+                  <td>Гомель 2</td>
+                  <td>ул. Советская, 19</td>
+                  <td>BELPOST_S</td>
+                  <td><span class="status-chip active">Активен</span></td>
+                  <td>62</td>
+                  <td>12</td>
                 </tr>
-                <tr>
-                  <td>029600</td>
-                  <td>Диспетчер</td>
-                  <td>BELPOST</td>
-                  <td>Ю</td>
-                  <td>Иващенко</td>
-                  <td>Ю</td>
-                  <td>+375232334433</td>
-                  <td><span class="status-chip active">Да</span></td>
-                  <td>14/01/2025 10:38:43</td>
+                <tr class="clickable-row" data-href="locker.html">
+                  <td class="link-cell">G8122</td>
+                  <td>99999922</td>
+                  <td>Grodno</td>
+                  <td>Гродно 1</td>
+                  <td>ул. Ленина, 8</td>
+                  <td>BELPOST_M</td>
+                  <td><span class="status-chip blue">Открыт</span></td>
+                  <td>47</td>
+                  <td>23</td>
                 </tr>
-                <tr>
-                  <td>180401</td>
-                  <td>Техник</td>
-                  <td>BELPOST</td>
-                  <td>Техник</td>
-                  <td>Т</td>
-                  <td></td>
-                  <td></td>
-                  <td><span class="status-chip pause">Нет</span></td>
-                  <td>22/05/2024 14:00:22</td>
-                </tr>
-                <tr>
-                  <td>adminBrest</td>
-                  <td>Администратор филиала</td>
-                  <td>BELPOST</td>
-                  <td>Светлана</td>
-                  <td>Рулева</td>
-                  <td>Александровна</td>
-                  <td></td>
-                  <td><span class="status-chip active">Да</span></td>
-                  <td>12/05/2026 07:31:17</td>
+                <tr class="clickable-row" data-href="locker.html">
+                  <td class="link-cell">G8130</td>
+                  <td>99999930</td>
+                  <td>Могилев</td>
+                  <td>Могилев 4</td>
+                  <td>ул. Первомайская, 12</td>
+                  <td>BELPOST_L</td>
+                  <td><span class="status-chip pause">Ошибка</span></td>
+                  <td>29</td>
+                  <td>40</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <div class="layout-2">
-          <section class="card">
-            <div class="card-head">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h2>Быстрые переходы</h2>
+              <p>Сценарии, которые чаще всего нужны оператору или администратору.</p>
+            </div>
+          </div>
+          <div class="panel-list">
+            <a class="panel-item" href="locker.html">
               <div>
-                <h3>Карточка почтомата</h3>
-                <p>Параметры устройства, привязка к филиалу и системные идентификаторы.</p>
+                <strong>Открыть карточку почтомата</strong>
+                <div class="muted">Просмотр статусов ячеек, адреса, параметров устройства и действий по ячейкам.</div>
               </div>
-              <div class="toolbar">
-                <button class="button">Сохранить</button>
-                <button class="small-button">История</button>
-              </div>
-            </div>
-
-            <div class="form-grid">
-              <div class="field">
-                <label>Устройство</label>
-                <input class="input" value="G8101" />
-              </div>
-              <div class="field">
-                <label>LUN</label>
-                <input class="input" value="99999901" />
-              </div>
-              <div class="field">
-                <label>Terminal ID</label>
-                <input class="input" value="0" />
-              </div>
-
-              <div class="field">
-                <label>Индекс</label>
-                <input class="input" value="224709" />
-              </div>
-              <div class="field">
-                <label>Индекс ОПС</label>
-                <input class="input" value="224701" />
-              </div>
-              <div class="field">
-                <label>Номерное обозначение ОПС</label>
-                <input class="input" value="096-51-01" />
-              </div>
-
-              <div class="field">
-                <label>ID из системы перенаправления</label>
-                <input class="input" value="101" />
-              </div>
-              <div class="field">
-                <label>Регион</label>
-                <select class="select"><option>Brest</option></select>
-              </div>
-              <div class="field">
-                <label>СОАТО</label>
-                <input class="input" value="1401000000" />
-              </div>
-
-              <div class="field field--wide">
-                <label>Адрес</label>
-                <input class="input" value="г. Брест, Варшавское шоссе, 43" />
-              </div>
-
-              <div class="field">
-                <label>Филиал</label>
-                <input class="input" value="Брест 3" />
-              </div>
-              <div class="field">
-                <label>Тип устройства</label>
-                <select class="select"><option>BELPOST_M</option></select>
-              </div>
-              <div class="field">
-                <label>Команда</label>
-                <select class="select"><option>-------------</option></select>
-              </div>
-
-              <div class="field">
-                <label>Широта</label>
-                <input class="input" value="0.0" />
-              </div>
-              <div class="field">
-                <label>Долгота</label>
-                <input class="input" value="0.0" />
-              </div>
-              <div class="field">
-                <label>Статус устройства</label>
-                <input class="input" value="Активно" />
-              </div>
-            </div>
-          </section>
-
-          <section class="card locker-card">
-            <div class="locker-meta">
+              <span class="status-chip active">Перейти</span>
+            </a>
+            <a class="panel-item" href="users.html">
               <div>
-                <h3 class="locker-title">Внешний вид устройства</h3>
-                <p class="muted">Сетка ячеек с цветовой индикацией состояний и быстрым выбором ячейки.</p>
+                <strong>Открыть список пользователей</strong>
+                <div class="muted">Операторы, техники, администраторы филиалов и журнал активности.</div>
               </div>
-              <button class="small-button">Обновить схему</button>
-            </div>
-
-            <div class="locker-side">
-              <div class="locker-grid">
-                <div class="cell green">L</div>
-                <div class="cell red">L</div>
-                <div class="cell red">L</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell orange">S</div>
-                <div class="cell orange">S</div>
-                <div class="cell green">S</div>
-                <div class="cell red">S</div>
-                <div class="cell orange">S</div>
-                <div class="cell green">S</div>
-                <div class="cell red">S</div>
-                <div class="cell orange">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell red">M</div>
-                <div class="cell orange">M</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell red">M</div>
-              </div>
-
-              <div class="terminal-preview">Почтомат</div>
-
-              <div class="locker-grid">
-                <div class="cell green">L</div>
-                <div class="cell green">L</div>
-                <div class="cell green">L</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell red">S</div>
-                <div class="cell green">S</div>
-                <div class="cell orange">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">S</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell green">M</div>
-                <div class="cell orange">M</div>
-                <div class="cell blue">M</div>
-              </div>
-            </div>
-
-            <div class="legend">
-              <div class="legend-item legend-gray">Не настроена</div>
-              <div class="legend-item legend-red">Не инициализирована / Ошибка</div>
-              <div class="legend-item legend-green">Свободна</div>
-              <div class="legend-item legend-orange">Забронирована / Занята</div>
-              <div class="legend-item legend-blue">Открыта</div>
-            </div>
-
-            <div class="detail-grid">
-              <div class="field">
-                <label>Номер замка</label>
-                <input class="input" value="L-18" />
-              </div>
-              <div class="field">
-                <label>Статус замка</label>
-                <input class="input" value="Исправен" />
-              </div>
-              <div class="field">
-                <label>Размер ячейки</label>
-                <select class="select"><option>M</option></select>
-              </div>
-              <div class="field">
-                <label>Договор</label>
-                <input class="input" value="PK-2481" />
-              </div>
-              <div class="field">
-                <label>Статус ячейки</label>
-                <input class="input" value="Свободна" />
-              </div>
-              <div class="field">
-                <label>№ отправления</label>
-                <input class="input" value="BY45891237" />
-              </div>
-            </div>
-
-            <div class="detail-actions">
-              <button class="small-button danger-button">Деактивировать ячейку</button>
-              <button class="small-button success-button">Активировать ячейку</button>
-            </div>
-          </section>
-        </div>
+              <span class="status-chip active">Перейти</span>
+            </a>
+          </div>
+        </section>
       </main>
     </div>
   </div>
+  <script src="app.js"></script>
 </body>
 </html>
