@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Service Monitor, карточка устройства</title>
+  <meta name="description" content="Карточка банкомата или устройства самообслуживания с телеметрией и действиями." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Self-Service Monitor</strong>
+        <span>Мониторинг банкоматов, терминалов оплаты и киосков самообслуживания</span>
+      </div>
+
+      <nav class="menu">
+        <a href="index.html">Дашборд</a>
+        <a href="devices.html">Устройства</a>
+        <a href="device.html" class="active">Карточка устройства</a>
+        <a href="#">Инциденты</a>
+        <a href="#">Карта</a>
+        <a href="#">Инкассация</a>
+        <a href="#">Сервис</a>
+        <a href="#">Отчёты</a>
+        <a href="#">Настройки</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <strong>Карточка устройства ATM-0441</strong>
+        <div class="user">
+          <span class="dot"></span>
+          <span>Инцидент P1 открыт</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h1>Паспорт устройства</h1>
+              <p class="page-lead">Статус, телеметрия, сервисные узлы и действия оператора.</p>
+            </div>
+            <div class="toolbar">
+              <a class="small-button" href="devices.html">← К списку</a>
+              <button class="button" id="ackButton">Подтвердить инцидент</button>
+              <button class="small-button">Создать выезд</button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>ID устройства</label>
+              <input class="input" value="ATM-0441" />
+            </div>
+            <div class="field">
+              <label>Тип</label>
+              <input class="input" value="Банкомат" />
+            </div>
+            <div class="field">
+              <label>Модель</label>
+              <input class="input" value="NCR SelfServ 82" />
+            </div>
+
+            <div class="field">
+              <label>Регион</label>
+              <input class="input" value="Минск" />
+            </div>
+            <div class="field field--wide">
+              <label>Локация</label>
+              <input class="input" value="ТЦ Dana Mall, 1 этаж, пр-т Независимости 3" />
+            </div>
+
+            <div class="field">
+              <label>Сетевой статус</label>
+              <input class="input is-disabled" value="Offline, heartbeat lost" disabled />
+            </div>
+            <div class="field">
+              <label>Последний heartbeat</label>
+              <input class="input is-disabled" value="14:18 UTC" disabled />
+            </div>
+            <div class="field">
+              <label>SLA статус</label>
+              <input class="input is-disabled" value="Риск нарушения через 18 мин" disabled />
+            </div>
+
+            <div class="field">
+              <label>Кассета A</label>
+              <input class="input" value="20 BYN, 81%" />
+            </div>
+            <div class="field">
+              <label>Кассета B</label>
+              <input class="input" value="50 BYN, 44%" />
+            </div>
+            <div class="field">
+              <label>Кассета C</label>
+              <input class="input" value="100 BYN, 12%" />
+            </div>
+          </div>
+        </section>
+
+        <section class="layout-2">
+          <article class="card locker-card">
+            <div class="locker-meta">
+              <div>
+                <h2 class="locker-title">Состояние модулей</h2>
+                <p class="muted">Нажми на модуль, чтобы посмотреть детали справа.</p>
+              </div>
+              <button class="small-button" id="pingButton">Пинговать устройство</button>
+            </div>
+
+            <div class="module-grid">
+              <div class="cell green is-selected" data-module="CPU" data-state="Норма" data-metric="Загрузка 37%" data-last="14:17:54" data-action="Мониторинг" >CPU</div>
+              <div class="cell red" data-module="NET" data-state="Потеря связи" data-metric="Нет heartbeat 12 мин" data-last="14:18:03" data-action="Проверить канал / VPN">NET</div>
+              <div class="cell orange" data-module="DISP" data-state="Деградация" data-metric="1 jam за сутки" data-last="13:41:10" data-action="Нужен осмотр узла выдачи">DISP</div>
+              <div class="cell green" data-module="CARD" data-state="Норма" data-metric="Ошибок нет" data-last="14:17:51" data-action="Мониторинг">CARD</div>
+              <div class="cell orange" data-module="PRN" data-state="Расходник" data-metric="Лента 23%" data-last="14:16:09" data-action="Заложить в выезд">PRN</div>
+              <div class="cell green" data-module="SAFE" data-state="Норма" data-metric="Датчики ок" data-last="14:17:45" data-action="Мониторинг">SAFE</div>
+            </div>
+
+            <div class="detail-grid no-top-padding">
+              <div class="field">
+                <label>Модуль</label>
+                <input class="input" data-field="module" value="CPU" />
+              </div>
+              <div class="field">
+                <label>Состояние</label>
+                <input class="input" data-field="state" value="Норма" />
+              </div>
+              <div class="field">
+                <label>Метрика</label>
+                <input class="input" data-field="metric" value="Загрузка 37%" />
+              </div>
+              <div class="field">
+                <label>Последнее событие</label>
+                <input class="input" data-field="last" value="14:17:54" />
+              </div>
+              <div class="field field--wide">
+                <label>Рекомендуемое действие</label>
+                <input class="input" data-field="action" value="Мониторинг" />
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h2>Лента событий</h2>
+                <p>Последние записи по устройству.</p>
+              </div>
+            </div>
+            <div class="panel-list" id="timeline">
+              <div class="panel-item timeline-item acknowledged-target">
+                <div>
+                  <strong>14:18, heartbeat timeout</strong>
+                  <div class="muted">Устройство перестало отвечать по основному каналу связи.</div>
+                </div>
+                <span class="status-chip danger" id="incidentBadge">P1</span>
+              </div>
+              <div class="panel-item timeline-item">
+                <div>
+                  <strong>13:41, dispenser warning</strong>
+                  <div class="muted">Зафиксирован кратковременный jam, операция восстановлена автоматически.</div>
+                </div>
+                <span class="status-chip pause">warn</span>
+              </div>
+              <div class="panel-item timeline-item">
+                <div>
+                  <strong>11:02, cash cassette C low</strong>
+                  <div class="muted">Остаток по кассете C опустился ниже 15 процентов.</div>
+                </div>
+                <span class="status-chip blue">cash</span>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

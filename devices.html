@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Self-Service Monitor, список устройств</title>
+  <meta name="description" content="Кликабельный список банкоматов и устройств самообслуживания." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Self-Service Monitor</strong>
+        <span>Мониторинг банкоматов, терминалов оплаты и киосков самообслуживания</span>
+      </div>
+
+      <nav class="menu">
+        <a href="index.html">Дашборд</a>
+        <a href="devices.html" class="active">Устройства</a>
+        <a href="device.html">Карточка устройства</a>
+        <a href="#">Инциденты</a>
+        <a href="#">Карта</a>
+        <a href="#">Инкассация</a>
+        <a href="#">Сервис</a>
+        <a href="#">Отчёты</a>
+        <a href="#">Настройки</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <strong>Список устройств</strong>
+        <div class="user">
+          <span class="dot"></span>
+          <span>NOC console</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h1>Устройства сети</h1>
+              <p class="page-lead">Интерактивная таблица для мониторинга состояния банкоматов, платёжных терминалов и киосков.</p>
+            </div>
+            <div class="toolbar">
+              <input class="search" id="deviceSearch" placeholder="Поиск по ID, адресу или модели" />
+              <select class="select" id="deviceTypeFilter">
+                <option value="all">Все типы</option>
+                <option value="atm">Банкоматы</option>
+                <option value="payment">Терминалы оплаты</option>
+                <option value="kiosk">Киоски</option>
+              </select>
+              <select class="select" id="deviceStatusFilter">
+                <option value="all">Все статусы</option>
+                <option value="online">Онлайн</option>
+                <option value="warning">Внимание</option>
+                <option value="offline">Офлайн</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Тип</th>
+                  <th>Модель</th>
+                  <th>Регион</th>
+                  <th>Локация</th>
+                  <th>Связь</th>
+                  <th>Наличные</th>
+                  <th>Сервис</th>
+                  <th>Статус</th>
+                </tr>
+              </thead>
+              <tbody id="deviceTableBody">
+                <tr class="clickable-row" data-href="device.html?id=ATM-0441" data-type="atm" data-status="offline" data-search="atm-0441 минск dana mall ncr selfserv 82">
+                  <td class="link-cell">ATM-0441</td>
+                  <td>Банкомат</td>
+                  <td>NCR SelfServ 82</td>
+                  <td>Минск</td>
+                  <td>ТЦ Dana Mall</td>
+                  <td>Нет heartbeat 12 мин</td>
+                  <td>62%</td>
+                  <td>Ошибка диспенсера</td>
+                  <td><span class="status-chip danger">Офлайн</span></td>
+                </tr>
+                <tr class="clickable-row" data-href="device.html?id=ATM-0208" data-type="atm" data-status="warning" data-search="atm-0208 брест diebold nixdorf отделение 17">
+                  <td class="link-cell">ATM-0208</td>
+                  <td>Банкомат</td>
+                  <td>DN Series 200V</td>
+                  <td>Брест</td>
+                  <td>Отделение №17</td>
+                  <td>Онлайн</td>
+                  <td>18%</td>
+                  <td>Cash jam, нужен выезд</td>
+                  <td><span class="status-chip pause">Внимание</span></td>
+                </tr>
+                <tr class="clickable-row" data-href="device.html?id=PAY-3107" data-type="payment" data-status="warning" data-search="pay-3107 витебск ingenico ict220 таймауты">
+                  <td class="link-cell">PAY-3107</td>
+                  <td>Терминал оплаты</td>
+                  <td>Ingenico ICT220</td>
+                  <td>Витебск</td>
+                  <td>ТЦ Green</td>
+                  <td>Пакетные потери 8%</td>
+                  <td>Н/Д</td>
+                  <td>Рост таймаутов</td>
+                  <td><span class="status-chip blue">Деградация</span></td>
+                </tr>
+                <tr class="clickable-row" data-href="device.html?id=KSK-1102" data-type="kiosk" data-status="warning" data-search="ksk-1102 гомель киоск мфц бумага чековая лента">
+                  <td class="link-cell">KSK-1102</td>
+                  <td>Киоск</td>
+                  <td>Custom Q-120</td>
+                  <td>Гомель</td>
+                  <td>МФЦ, зал 2</td>
+                  <td>Онлайн</td>
+                  <td>Н/Д</td>
+                  <td>Чековая лента 8%</td>
+                  <td><span class="status-chip pause">Внимание</span></td>
+                </tr>
+                <tr class="clickable-row" data-href="device.html?id=ATM-0514" data-type="atm" data-status="online" data-search="atm-0514 могилев ncr selfserv 84 отделение 3">
+                  <td class="link-cell">ATM-0514</td>
+                  <td>Банкомат</td>
+                  <td>NCR SelfServ 84</td>
+                  <td>Могилев</td>
+                  <td>Отделение №3</td>
+                  <td>Онлайн</td>
+                  <td>74%</td>
+                  <td>Ок</td>
+                  <td><span class="status-chip active">Онлайн</span></td>
+                </tr>
+                <tr class="clickable-row" data-href="device.html?id=PAY-4011" data-type="payment" data-status="online" data-search="pay-4011 гродно pax s90 вокзал">
+                  <td class="link-cell">PAY-4011</td>
+                  <td>Терминал оплаты</td>
+                  <td>PAX S90</td>
+                  <td>Гродно</td>
+                  <td>ЖД вокзал</td>
+                  <td>Онлайн</td>
+                  <td>Н/Д</td>
+                  <td>Ок</td>
+                  <td><span class="status-chip active">Онлайн</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

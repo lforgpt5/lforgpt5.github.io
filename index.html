@@ -3,183 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ParcelHub Admin, почтоматы</title>
-  <meta name="description" content="Список почтоматов и навигация по страницам прототипа системы управления." />
+  <title>Self-Service Monitor, дашборд устройств</title>
+  <meta name="description" content="Прототип системы мониторинга банкоматов, платежных терминалов и киосков самообслуживания." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <strong>ParcelHub Admin</strong>
-        <span>Управление почтоматами, отправлениями и пользователями</span>
+        <strong>Self-Service Monitor</strong>
+        <span>Мониторинг банкоматов, терминалов оплаты и киосков самообслуживания</span>
       </div>
 
       <nav class="menu">
-        <a href="users.html">Пользователи</a>
-        <a href="#">Отправления</a>
-        <a href="#">Чеки</a>
-        <a href="#">Сообщения</a>
-        <a href="#">Размеры ячеек</a>
-        <a href="index.html" class="active">Почтоматы</a>
-        <a href="#">Регионы</a>
-        <a href="#">Группы</a>
-        <a href="#">Договоры</a>
+        <a href="index.html" class="active">Дашборд</a>
+        <a href="devices.html">Устройства</a>
+        <a href="device.html">Карточка устройства</a>
+        <a href="#">Инциденты</a>
+        <a href="#">Карта</a>
+        <a href="#">Инкассация</a>
+        <a href="#">Сервис</a>
+        <a href="#">Отчёты</a>
         <a href="#">Настройки</a>
-        <a href="#">Профиль</a>
       </nav>
     </aside>
 
     <div class="main">
       <header class="topbar">
-        <strong>Список почтоматов</strong>
+        <strong>Операционный дашборд</strong>
         <div class="user">
           <span class="dot"></span>
-          <span>Вход, ANDREI</span>
+          <span>Дежурная смена, Андрей</span>
         </div>
       </header>
 
       <main class="content">
         <section class="stats-grid">
-          <article class="card stat-card">
-            <strong>148</strong>
-            <span class="muted">активных устройств</span>
+          <article class="card stat-card clickable-card" data-href="devices.html?filter=all">
+            <strong>1 284</strong>
+            <span class="muted">устройств под мониторингом</span>
           </article>
-          <article class="card stat-card">
-            <strong>12</strong>
-            <span class="muted">с ошибками</span>
+          <article class="card stat-card clickable-card" data-href="devices.html?filter=offline">
+            <strong>37</strong>
+            <span class="muted">офлайн прямо сейчас</span>
           </article>
-          <article class="card stat-card">
-            <strong>24</strong>
-            <span class="muted">требуют обслуживания</span>
+          <article class="card stat-card clickable-card" data-href="devices.html?filter=cashlow">
+            <strong>18</strong>
+            <span class="muted">с низким остатком наличных</span>
           </article>
-          <article class="card stat-card">
-            <strong>7 842</strong>
-            <span class="muted">свободных ячеек</span>
+          <article class="card stat-card clickable-card" data-href="devices.html?filter=alerts">
+            <strong>9</strong>
+            <span class="muted">критических инцидентов</span>
           </article>
         </section>
 
-        <section class="card">
-          <div class="card-head">
-            <div>
-              <h1>Почтоматы</h1>
-              <p class="page-lead">Кликабельный список устройств. Нажми на строку, чтобы открыть карточку конкретного почтомата.</p>
+        <section class="layout-2">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h1>Критические события</h1>
+                <p class="page-lead">Главное для оператора за последние 30 минут.</p>
+              </div>
+              <div class="toolbar">
+                <select class="select" id="eventSeverityFilter">
+                  <option value="all">Все уровни</option>
+                  <option value="critical">Критичные</option>
+                  <option value="warning">Предупреждения</option>
+                </select>
+              </div>
             </div>
-            <div class="toolbar">
-              <input class="search" placeholder="Поиск по адресу или ID" />
-              <select class="select">
-                <option>Все регионы</option>
-                <option>Минск</option>
-                <option>Brest</option>
-                <option>Grodno</option>
-              </select>
-              <select class="select">
-                <option>Все статусы</option>
-                <option>Активен</option>
-                <option>Ошибка</option>
-                <option>Обслуживание</option>
-              </select>
-              <button class="button">+ Добавить почтомат</button>
-            </div>
-          </div>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Устройство</th>
-                  <th>LUN</th>
-                  <th>Регион</th>
-                  <th>Филиал</th>
-                  <th>Адрес</th>
-                  <th>Тип</th>
-                  <th>Статус</th>
-                  <th>Свободно</th>
-                  <th>Занято</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="clickable-row" data-href="locker.html">
-                  <td class="link-cell">G8101</td>
-                  <td>99999901</td>
-                  <td>Brest</td>
-                  <td>Брест 3</td>
-                  <td>г. Брест, Варшавское шоссе, 43</td>
-                  <td>BELPOST_M</td>
-                  <td><span class="status-chip active">Активен</span></td>
-                  <td>54</td>
-                  <td>18</td>
-                </tr>
-                <tr class="clickable-row" data-href="locker.html">
-                  <td class="link-cell">G8102</td>
-                  <td>99999902</td>
-                  <td>Минск</td>
-                  <td>Минск 7</td>
-                  <td>пр-т Независимости, 54</td>
-                  <td>BELPOST_M</td>
-                  <td><span class="status-chip pause">Обслуживание</span></td>
-                  <td>38</td>
-                  <td>31</td>
-                </tr>
-                <tr class="clickable-row" data-href="locker.html">
-                  <td class="link-cell">G8115</td>
-                  <td>99999915</td>
-                  <td>Гомель</td>
-                  <td>Гомель 2</td>
-                  <td>ул. Советская, 19</td>
-                  <td>BELPOST_S</td>
-                  <td><span class="status-chip active">Активен</span></td>
-                  <td>62</td>
-                  <td>12</td>
-                </tr>
-                <tr class="clickable-row" data-href="locker.html">
-                  <td class="link-cell">G8122</td>
-                  <td>99999922</td>
-                  <td>Grodno</td>
-                  <td>Гродно 1</td>
-                  <td>ул. Ленина, 8</td>
-                  <td>BELPOST_M</td>
-                  <td><span class="status-chip blue">Открыт</span></td>
-                  <td>47</td>
-                  <td>23</td>
-                </tr>
-                <tr class="clickable-row" data-href="locker.html">
-                  <td class="link-cell">G8130</td>
-                  <td>99999930</td>
-                  <td>Могилев</td>
-                  <td>Могилев 4</td>
-                  <td>ул. Первомайская, 12</td>
-                  <td>BELPOST_L</td>
-                  <td><span class="status-chip pause">Ошибка</span></td>
-                  <td>29</td>
-                  <td>40</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            <div class="panel-list" id="eventList">
+              <a class="panel-item event-item" href="device.html?id=ATM-0441" data-severity="critical">
+                <div>
+                  <strong>ATM-0441, нет связи более 12 минут</strong>
+                  <div class="muted">Минск, ТЦ Dana Mall, банкомат NCR. Последний heartbeat: 14:18.</div>
+                </div>
+                <span class="status-chip danger">P1</span>
+              </a>
+              <a class="panel-item event-item" href="device.html?id=ATM-0208" data-severity="critical">
+                <div>
+                  <strong>ATM-0208, jam в cash dispenser</strong>
+                  <div class="muted">Брест, отделение №17. Операции выдачи остановлены.</div>
+                </div>
+                <span class="status-chip danger">P1</span>
+              </a>
+              <a class="panel-item event-item" href="device.html?id=KSK-1102" data-severity="warning">
+                <div>
+                  <strong>KSK-1102, заканчивается чековая лента</strong>
+                  <div class="muted">Гомель, МФЦ. Остаток примерно 8 процентов.</div>
+                </div>
+                <span class="status-chip pause">P3</span>
+              </a>
+              <a class="panel-item event-item" href="device.html?id=PAY-3107" data-severity="warning">
+                <div>
+                  <strong>PAY-3107, просадка сети и рост таймаутов</strong>
+                  <div class="muted">Витебск, терминал оплаты. SLA пока в пределах допуска.</div>
+                </div>
+                <span class="status-chip blue">P2</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <h2>Состояние сети устройств</h2>
+                <p>Распределение по типам и текущему состоянию.</p>
+              </div>
+            </div>
+
+            <div class="panel-list compact-panels">
+              <div class="panel-item stat-line">
+                <div>
+                  <strong>Банкоматы</strong>
+                  <div class="muted">742 устройства</div>
+                </div>
+                <div class="mini-badges">
+                  <span class="status-chip active">690 ok</span>
+                  <span class="status-chip pause">31 сервис</span>
+                  <span class="status-chip danger">21 сбой</span>
+                </div>
+              </div>
+              <div class="panel-item stat-line">
+                <div>
+                  <strong>Платёжные терминалы</strong>
+                  <div class="muted">391 устройство</div>
+                </div>
+                <div class="mini-badges">
+                  <span class="status-chip active">365 ok</span>
+                  <span class="status-chip pause">14 сервис</span>
+                  <span class="status-chip danger">12 сбой</span>
+                </div>
+              </div>
+              <div class="panel-item stat-line">
+                <div>
+                  <strong>Киоски самообслуживания</strong>
+                  <div class="muted">151 устройство</div>
+                </div>
+                <div class="mini-badges">
+                  <span class="status-chip active">139 ok</span>
+                  <span class="status-chip pause">4 сервис</span>
+                  <span class="status-chip danger">8 сбой</span>
+                </div>
+              </div>
+            </div>
+          </article>
         </section>
 
         <section class="card">
           <div class="card-head">
             <div>
               <h2>Быстрые переходы</h2>
-              <p>Сценарии, которые чаще всего нужны оператору или администратору.</p>
+              <p>Ключевые страницы прототипа с живыми переходами.</p>
             </div>
           </div>
           <div class="panel-list">
-            <a class="panel-item" href="locker.html">
+            <a class="panel-item" href="devices.html">
               <div>
-                <strong>Открыть карточку почтомата</strong>
-                <div class="muted">Просмотр статусов ячеек, адреса, параметров устройства и действий по ячейкам.</div>
+                <strong>Список устройств</strong>
+                <div class="muted">Фильтры по типу, региону, SLA и оперативному статусу.</div>
               </div>
-              <span class="status-chip active">Перейти</span>
+              <span class="status-chip active">Открыть</span>
             </a>
-            <a class="panel-item" href="users.html">
+            <a class="panel-item" href="device.html?id=ATM-0441">
               <div>
-                <strong>Открыть список пользователей</strong>
-                <div class="muted">Операторы, техники, администраторы филиалов и журнал активности.</div>
+                <strong>Карточка устройства и инцидента</strong>
+                <div class="muted">Телеметрия, кассеты, ошибки модулей, действия оператора и сервисный журнал.</div>
               </div>
-              <span class="status-chip active">Перейти</span>
+              <span class="status-chip active">Открыть</span>
             </a>
           </div>
         </section>
